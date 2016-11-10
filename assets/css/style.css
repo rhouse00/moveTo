@@ -1,0 +1,26 @@
+body, html {
+    height:100%;
+    display:block;
+    background-color:#016D9E;
+}
+
+.mdl-grid {
+    margin:0;
+    padding:0;
+}
+
+#zillow,
+#events,
+#neighbor,
+#weather {
+    height:200px;
+}
+
+#search {
+    height:200px;
+    background: url(../images/skyline.jpg);
+}
+
+#searchBar {
+    margin:10% 0 0 13%;
+}
