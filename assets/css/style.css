@@ -22,5 +22,6 @@ body, html {
 }
 
 #searchBar {
-    margin:10% 0 0 13%;
+    margin:10% 0 0 10%;
+    width:80%;
 }
