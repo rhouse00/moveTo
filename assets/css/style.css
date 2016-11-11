@@ -1,7 +1,7 @@
 body, html {
     height:100%;
     display:block;
-    background-color:#016D9E;
+    background-color:#34bfc2;
 }
 
 .mdl-grid {
@@ -18,12 +18,17 @@ body, html {
 
 #search {
     height:200px;
-    background: url(../images/skyline.jpg);
+    background: url(../images/moveToBanner.png) no-repeat center; 
 }
 
 #searchBar {
-    margin:10% 0 0 10%;
-    width:80%;
+    margin:20% 0 0 35%;
+    width:30%;
+}
+
+#location,
+#dummyText {
+    text-align:center;
 }
 
 .card-square.mdl-card {
@@ -37,5 +42,15 @@ body, html {
 }
 
 .box-title {
-    
+    margin:0 0 45% 0;
+    padding:0;
+    font-size:175%;
+}
+
+.mdl-card__actions {
+    height:20%;
+}
+
+.see-more {
+    height:100%;
 }

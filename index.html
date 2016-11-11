@@ -11,20 +11,21 @@
     <script defer src="https://code.getmdl.io/1.2.1/material.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/3.5.3/firebase.js"></script>
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.orange-light_blue.min.css" />
 </head>
 <body>
 
     <div class="mdl-grid">
 
         <div class="mdl-cell mdl-cell--4-col" id="zillow">
-            <div class="card-square mdl-card mdl-shadow--4dp">
+            <!--<div class="card-square mdl-card mdl-shadow--4dp">
                 <div class="mdl-card__title mdl-card--expand">
-                    <h2 class="boxTitle">Zillow</h2>
+                    <h2 class="box-title">Location Info</h2>
                 </div>
                 <div class="mdl-card__actions mdl-card--border">
-                    <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">See More</a>
+                    <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect see-more">See More</a>
                 </div>
-            </div>
+            </div>-->
         </div>
 
         <div class="mdl-cell mdl-cell--4-offset mdl-cell--4-col" id="weather">
@@ -33,11 +34,11 @@
     </div>
 
     <div class="mdl-grid">
-        <div class="mdl-cell mdl-cell--4-offset mdl-cell--4-col" id="search">
+        <div class="mdl-cell mdl-cell--12-col" id="search">
             <form action="#">
                 <div class="mdl-textfield mdl-js-textfield" id="searchBar">
                     <input class="mdl-textfield__input" type="text" id="location">
-                    <label class="mdl-textfield__label" for="location">MoveTo...</label>
+                    <label class="mdl-textfield__label" for="location" id="dummyText">City...</label>
                 </div>
             </form>
         </div>
