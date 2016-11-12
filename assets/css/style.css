@@ -9,8 +9,8 @@ body, html {
     padding:0;
 }
 
-#zillow,
-#events,
+#map,
+#city-stats,
 #neighbor,
 #weather {
     height:200px;
@@ -20,7 +20,7 @@ body, html {
 #search {
     height:200px;
     background: url(../images/moveToBanner.png) no-repeat center; 
-    margin-top:-2%;
+    margin-top:20%;
 }
 
 #searchBar {

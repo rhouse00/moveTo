@@ -5,6 +5,10 @@
 
 //<script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"></script>
 
+$(".mdl-cell--6-col").hide();
+
+var userInput = "";
+
 var houseQueryUrl = "https://www.quandl.com/api/v3/datasets/ZILL/";
 var houseKey = "api_key=y2xh6kV4KLrYCNGRJmSj"
 var numResults = 10; //number
@@ -52,6 +56,18 @@ function addHomeInfo(response) {
 		
 };
 
+
+// on enter key
+
+$(document).keypress(function(e) {
+    if(e.which == 13) {
+		$(".mdl-cell--6-col").show();
+		$("#search").css("margin-top", "-2%")
+		userInput = $("#location").val().trim();
+		$("#location").val("");
+		console.log(userInput);
+    }
+});
 
 
 
