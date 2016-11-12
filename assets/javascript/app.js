@@ -16,6 +16,16 @@ var meetUpRadius = "&radius=" + radius;
 var fullMeetUpQueryUrl = meetUpQueryUrl + meetUpZipcode + meetUpRadius + meetUpKey;
 
 
+$.ajax({
+	url: fullMeetUpQueryUrl,
+	method: "GET"
+})
+.done(function(response){
+	// var results = response.dataset.data;
+	console.log(response);
+	// console.log(results[0][1]); //first # is for the month, the lower the # the more recent. second # is the date (0) or Price (1)
+});
+
 
 
 var houseQueryUrl = "https://www.quandl.com/api/v3/datasets/ZILL/";
@@ -47,20 +57,19 @@ var housingType = {
 var fullQueryZipcode = houseQueryUrl + areaType.zipcode + zipcode + housingType.medianRent + format + houseKey;
 var fullQueryCity = houseQueryUrl + areaType.city + city + housingType.medianRent + format + houseKey;
 
-$.ajax({
-	url: fullMeetUpQueryUrl,
-	method: "GET"
-})
-.done(function(response){
-	// var results = response.dataset.data;
-	addHomeInfo(response);
-	// console.log(results[0][1]); //first # is for the month, the lower the # the more recent. second # is the date (0) or Price (1)
-	
-});
+
 
 $.ajax({
 	url: fullQueryZipcode,
-	method: "GET"
+	method: "GET",
+	contentType: "text/plain",
+	crossDomain: true,
+	xhrFields: {
+		withCredentials: false
+	},
+	headers: {
+		"Access-Control-Allow-Origins": "moveto.heroku.com",
+	}
 })
 .done(function(response){
 	// var results = response.dataset.data;
@@ -71,7 +80,7 @@ $.ajax({
 
 function addHomeInfo(response) {
 		
-}
+};
 
 
 
