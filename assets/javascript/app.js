@@ -1,15 +1,36 @@
-(function(){
+// (function(){
 
 
 // Google Maps API Key = AIzaSyCXUJGafVbCwieSLcNI2KUw-gkJ-eh0ig0
 
 //<script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"></script>
+var zipcode = 95128;
+
+var jambaseKey = "&api_key=9jb9b7n5gjuehm3kah3zqe4b";
+var jambaseQueryUrl = "http://api.jambase.com/events?";
+var jambaseZipcode = "zipCode=" + zipcode;
+var numberPages = 1;
+var jambasePages = "&page=" + numberPages
+
+var jambaseFullQueryUrl = jambaseQueryUrl + jambaseZipcode + jambasePages + jambaseKey;
+
+console.log(jambaseFullQueryUrl);
+console.log("http://api.jambase.com/events?zipCode=95128&page=0&api_key=9jb9b7n5gjuehm3kah3zqe4b");
+$.ajax({
+	url: jambaseFullQueryUrl,
+	method: "GET"
+})
+.done(function(response){
+	console.log(response);
+	
+});
+
 
 var houseQueryUrl = "https://www.quandl.com/api/v3/datasets/ZILL/";
 var houseKey = "api_key=y2xh6kV4KLrYCNGRJmSj"
 var numResults = 10; //number
 var addLimit = "limit=" + numResults;
-var zipcode = 90210;
+
 var city = 10001;
 var format = ".json?"
 
@@ -60,4 +81,4 @@ function addHomeInfo(response) {
 
 
 
-})(this);
+// })(this);
