@@ -67,10 +67,10 @@ $("#citySearch").on("submit", function() {
 	$("#city").text(userInput);
 });
 
-
-
-
-
+$("#loginButton").on("click", function(){
+	$("#overlay").hide()
+	$(".card-wide").hide();
+});
 
 
 

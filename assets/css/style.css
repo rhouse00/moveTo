@@ -69,3 +69,36 @@ body, html {
     text-align:center;
     color:white;
 }
+
+#overlay {
+    position:fixed;
+    z-index: 100;
+    top:0; 
+    left:0;
+    bottom:0; 
+    right:0;
+    background-color:rgba(0,0,0,0.6);   
+}
+
+.card-wide.mdl-card {
+  width: 50%;
+  z-index: 150;
+}
+
+.card-wide > .mdl-card__title {
+  color: #fff;
+  height: 176px;
+  background: url(../images/moveToBanner.png) no-repeat center; 
+}
+
+.card-wide > .mdl-card__menu {
+  color: #fff;
+}
+
+.card-wide {
+    margin:-250px 25% 0 25%;
+}
+
+#loginButtonCont {
+    height:50px;
+}
