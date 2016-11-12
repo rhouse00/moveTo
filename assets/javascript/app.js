@@ -4,6 +4,34 @@
 // Google Maps API Key = AIzaSyCXUJGafVbCwieSLcNI2KUw-gkJ-eh0ig0
 
 //<script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"></script>
+var zipcode = 90210;
+
+var jambaseKey = "&api_key=9jb9b7n5gjuehm3kah3zqe4b&o=json";
+var jambaseQueryUrl = "http://api.jambase.com/events?";
+var jambaseZipcode = "zipCode=" + zipcode;
+var numberPages = 1;
+var jambasePages = "&page=" + numberPages
+
+var jambaseFullQueryUrl = jambaseQueryUrl + jambaseZipcode + jambasePages + jambaseKey;
+
+$.ajax({
+	url: jambaseFullQueryUrl,
+	method: "GET"
+})
+.done(function(response){
+	var results = response.Events;
+	// console.log(results);
+	// console.log(results[i].Artists[i].Name);
+
+	//Date - Artist - Venue - Ticket
+	console.log(results[0].Date);
+	console.log(results[0].Artists[0].Name);
+	console.log(results[0].Venue.Name);
+	console.log(results[0].TicketUrl);
+
+
+});
+
 
 $(".mdl-cell--6-col").hide();
 
@@ -13,7 +41,7 @@ var houseQueryUrl = "https://www.quandl.com/api/v3/datasets/ZILL/";
 var houseKey = "api_key=y2xh6kV4KLrYCNGRJmSj"
 var numResults = 10; //number
 var addLimit = "limit=" + numResults;
-var zipcode = 90210;
+
 var city = 10001;
 var format = ".json?"
 
