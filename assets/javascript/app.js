@@ -59,14 +59,12 @@ function addHomeInfo(response) {
 
 // on enter key
 
-$(document).keypress(function(e) {
-    if(e.which == 13) {
-		$(".mdl-cell--6-col").show();
-		$("#search").css("margin-top", "-2%")
-		userInput = $("#location").val().trim();
-		$("#location").val("");
-		console.log(userInput);
-    }
+$("#citySearch").on("submit", function() {
+	$(".mdl-cell--6-col").show();
+	$("#search").css("margin-top", "-2%")
+	userInput = $("#location").val().trim();
+	$("#location").val("");
+	$("#city").text(userInput);
 });
 
 

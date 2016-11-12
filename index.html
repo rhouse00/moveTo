@@ -7,7 +7,6 @@
 	<link rel="stylesheet" type="text/css" href="assets/css/reset.css">
 	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.indigo-pink.min.css">
     <script defer src="https://code.getmdl.io/1.2.1/material.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/3.5.3/firebase.js"></script>
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
@@ -17,7 +16,8 @@
 
     <div class="mdl-grid">
         <div class="mdl-cell mdl-cell--12-col" id="search">
-            <form action="#">
+            <h1 id="city"></h1>
+            <form action="#" id="citySearch">
                 <div class="mdl-textfield mdl-js-textfield" id="searchBar">
                     <input class="mdl-textfield__input" type="text" id="location">
                     <label class="mdl-textfield__label" for="location" id="dummyText">City...</label>
@@ -27,6 +27,27 @@
     </div>
 
     <div class="mdl-grid">
+
+        <div class="mdl-cell mdl-cell--6-col" id="map">
+            <div class="card-square mdl-card mdl-shadow--4dp">
+                <div class="mdl-card__title mdl-card--expand">
+                    <h2 class="box-title">Map</h2>
+                </div>
+                <div class="mdl-card__actions mdl-card--border">
+                    <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect see-more">See More</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="mdl-cell mdl-cell--6-col">
+        </div>
+
+    </div>
+
+    <div class="mdl-grid">
+
+        <div class="mdl-cell mdl-cell--6-col">
+        </div>
 
         <div class="mdl-cell mdl-cell--6-col" id="neighbor">
             <div class="card-square mdl-card mdl-shadow--4dp">
@@ -39,20 +60,9 @@
             </div>
         </div>
 
-        <div class="mdl-cell mdl-cell--6-col" id="map">
-            <div class="card-square mdl-card mdl-shadow--4dp">
-                <div class="mdl-card__title mdl-card--expand">
-                    <h2 class="box-title">Map</h2>
-                </div>
-                <div class="mdl-card__actions mdl-card--border">
-                    <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect see-more">See More</a>
-                </div>
-            </div>
-        </div>
     </div>
     
     <div class="mdl-grid">
-
         <div class="mdl-cell mdl-cell--6-col" id="weather">
             <div class="card-square mdl-card mdl-shadow--4dp">
                 <div class="mdl-card__title mdl-card--expand">
@@ -62,6 +72,16 @@
                     <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect see-more">See More</a>
                 </div>
             </div>
+        </div>
+        
+        <div class="mdl-cell mdl-cell--6-col">
+        </div>
+    
+    </div>
+
+    <div class="mdl-grid">  
+
+        <div class="mdl-cell mdl-cell--6-col">
         </div>
 
         <div class="mdl-cell mdl-cell--6-col" id="city-stats">

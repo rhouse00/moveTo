@@ -13,7 +13,7 @@ body, html {
 #city-stats,
 #neighbor,
 #weather {
-    height:200px;
+    height:250px;
     margin-top:3%;
 }
 
@@ -24,7 +24,7 @@ body, html {
 }
 
 #searchBar {
-    margin:180px 0 0 35%;
+    margin:-15px 0 0 35%;
     width:30%;
 }
 
@@ -57,6 +57,15 @@ body, html {
     height:100%;
 }
 
-.card-square {
-    margin:0 0 5% 0;
+.squares {
+    margin:10% 0 0 0;
+}
+
+#city {
+    float:left;
+    width:50%;
+    height:70px;
+    margin:125px 25% 0 25%;
+    text-align:center;
+    color:white;
 }
