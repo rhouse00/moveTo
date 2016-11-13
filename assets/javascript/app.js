@@ -1,5 +1,29 @@
 (function(){
 
+$(".mdl-cell--6-col").hide();
+
+var userInput = "";
+var parsedInput = "";
+
+// Autocomplete to get the perfectly parsed city name 
+function autoComplete(){
+	var placesKey = "&key=AIzaSyCosNzeaDeb3bNZKdVQMu8AJxzQxaL6jDo";
+	var placesUrl = "https://crossorigin.me/https://maps.googleapis.com/maps/api/place/autocomplete/json?";
+	var placesInput = "input=" + userInput;
+	var placesType = "&types=geocode";
+
+	var placesQueryUrl = placesUrl + placesInput + placesType + placesKey;
+
+	$.ajax({
+		url: placesQueryUrl,
+		method:"GET"
+	}).done(function(placesResponse){
+		var city = placesResponse.predictions[0].terms[0].value;
+		var state = placesResponse.predictions[0].terms[1].value;
+		parsedInput = city + ", " + state;
+		$("#city").text(parsedInput);
+	});
+};
 
 // Google Maps API Key = AIzaSyCXUJGafVbCwieSLcNI2KUw-gkJ-eh0ig0
 
@@ -31,11 +55,6 @@ $.ajax({
 
 
 });
-
-
-$(".mdl-cell--6-col").hide();
-
-var userInput = "";
 
 var houseQueryUrl = "https://www.quandl.com/api/v3/datasets/ZILL/";
 var houseKey = "api_key=y2xh6kV4KLrYCNGRJmSj"
@@ -84,19 +103,18 @@ function addHomeInfo(response) {
 		
 };
 
-
 // on enter key
 
 $("#citySearch").on("submit", function() {
 	$(".mdl-cell--6-col").show();
-	$("#search").css("margin-top", "-2%")
+	$("#search").css("margin-top", "-2%");
 	userInput = $("#location").val().trim();
 	$("#location").val("");
-	$("#city").text(userInput);
+	autoComplete();
 });
 
 $("#loginButton").on("click", function(){
-	$("#overlay").hide()
+	$("#overlay").hide();
 	$(".card-wide").hide();
 });
 
