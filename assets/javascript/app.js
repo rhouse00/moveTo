@@ -28,7 +28,7 @@ function autoComplete(){
 // Google Maps API Key = AIzaSyCXUJGafVbCwieSLcNI2KUw-gkJ-eh0ig0
 
 //<script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"></script>
-var zipcode = 90210;
+var zipcode = 90028;
 
 function jambase(){
 
@@ -96,6 +96,8 @@ function quandl(){
 	var fullQueryZipcode = houseQueryUrl + areaType.zipcode + zipcode + housingType.medianRent + format + houseKey;
 	var fullQueryCity = houseQueryUrl + areaType.city + city + housingType.medianRent + format + houseKey;
 
+	console.log(fullQueryZipcode);
+
 	$.ajax({
 		url: fullQueryZipcode,
 		method: "GET",	
@@ -112,8 +114,8 @@ function addHomeInfo(results) {
 		var newTr = $("<tr>");
 		var newDateTd = $("<td>").addClass("mdl-data-table__cell--non-numeric");
 		var newPriceTd = $("<td>");
-		var price = results[0][1];
-		var date = moment(results[0][0]).format("MMM YYYY");
+		var price = "$" + results[i][1];
+		var date = moment(results[i][0]).format("MMM YYYY");
 
 		newDateTd.text(date);
 		newPriceTd.text(price);
