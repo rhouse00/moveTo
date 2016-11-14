@@ -33,7 +33,7 @@ var zipcode = 90210;
 var jambaseKey = "&api_key=9jb9b7n5gjuehm3kah3zqe4b&o=json";
 var jambaseQueryUrl = "http://api.jambase.com/events?";
 var jambaseZipcode = "zipCode=" + zipcode;
-var numberPages = 1;
+var numberPages = 0;
 var jambasePages = "&page=" + numberPages
 
 var jambaseFullQueryUrl = jambaseQueryUrl + jambaseZipcode + jambasePages + jambaseKey;
@@ -45,7 +45,7 @@ function addMusicEvents(results) {
 		var newNameTd = $("<td>");
 		var newVenueTd = $("<td>");
 		var newTixTd = $("<td>");
-		var date = results[0].Date;
+		var date = moment(results[0].Date).format("MMM YYYY");
 		var name = results[0].Artists[0].Name;
 		var venue = results[0].Venue.Name;
 		var tix = results[0].TicketUrl;
@@ -56,11 +56,10 @@ function addMusicEvents(results) {
 		newTixTd.text(tix);
 
 		newTr.append(newDateTd, newNameTd, newVenueTd, newTixTd);
-		// Now the newTr needs to be added into the HTML
-		$(".jambase").append(newTr)
+			// Now the newTr needs to be added into the HTML
+		$("XXXX").append(newTr)
 	}
 };
-
 
 $.ajax({
 	url: jambaseFullQueryUrl,
@@ -68,14 +67,13 @@ $.ajax({
 })
 .done(function(response){
 	var results = response.Events;
-	//Date - Artist - Venue - Ticket
-	// console.log(results[0].Date);
-	// console.log(results[0].Artists[0].Name);
-	// console.log(results[0].Venue.Name);
-	// console.log(results[0].TicketUrl);
 	addMusicEvents(results);
-	
 });
+
+
+
+
+
 
 var houseQueryUrl = "https://www.quandl.com/api/v3/datasets/ZILL/";
 var houseKey = "api_key=y2xh6kV4KLrYCNGRJmSj"
@@ -100,23 +98,38 @@ var housingType = {
 var fullQueryZipcode = houseQueryUrl + areaType.zipcode + zipcode + housingType.medianRent + format + houseKey;
 var fullQueryCity = houseQueryUrl + areaType.city + city + housingType.medianRent + format + houseKey;
 
-
-
 $.ajax({
 	url: fullQueryZipcode,
-	method: "GET",
-	
+	method: "GET",	
 })
 .done(function(response){
-	// var results = response.dataset.data;
-	console.log(response);
-	// console.log(results[0][1]); //first # is for the month, the lower the # the more recent. second # is the date (0) or Price (1)
-	
+	var results = response.dataset.data;
+	addHomeInfo(results);
 });
 
-function addHomeInfo(response) {
-		
+function addHomeInfo(results) {
+	
+	for (var i = 0; i < results.length; i++) {
+		var newTr = $("<tr>");
+		var newDateTd = $("<td>");
+		var newPriceTd = $("<td>");
+		var newTable = $("<table>");
+		var newTBody = $("<tbody>")
+		var price = results[0][1];
+		var date = moment(results[0][0]).format("MMM YYYY");
+
+		newDateTd.text(date);
+		newPriceTd.text(price);
+
+		newTr.append(newDateTd, newPriceTd);
+
+			// Now the newTr needs to be added into the HTML
+		$("XXXXX").append(newTable);
+	};
 };
+
+
+
 
 // on enter key
 
