@@ -30,18 +30,30 @@ function autoComplete(){
 //<script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"></script>
 var zipcode = 90210;
 
-var jambaseKey = "&api_key=9jb9b7n5gjuehm3kah3zqe4b&o=json";
-var jambaseQueryUrl = "http://api.jambase.com/events?";
-var jambaseZipcode = "zipCode=" + zipcode;
-var numberPages = 0;
-var jambasePages = "&page=" + numberPages
+function jambase(){
 
-var jambaseFullQueryUrl = jambaseQueryUrl + jambaseZipcode + jambasePages + jambaseKey;
+	var jambaseKey = "&api_key=9jb9b7n5gjuehm3kah3zqe4b&o=json";
+	var jambaseQueryUrl = "https://crossorigin.me/http://api.jambase.com/events?";
+	var jambaseZipcode = "zipCode=" + zipcode;
+	var numberPages = 0;
+	var jambasePages = "&page=" + numberPages
+
+	var jambaseFullQueryUrl = jambaseQueryUrl + jambaseZipcode + jambasePages + jambaseKey;
+
+	$.ajax({
+		url: jambaseFullQueryUrl,
+		method: "GET"
+	})
+	.done(function(response){
+		var results = response.Events;
+		addMusicEvents(results);
+	});
+};
 
 function addMusicEvents(results) {
 	for(var i = 0; i < results.length; i++) {
 		var newTr = $("<tr>");
-		var newDateTd = $("<td>");
+		var newDateTd = $("<td>").addClass("mdl-data-table__cell--non-numeric");
 		var newNameTd = $("<td>");
 		var newVenueTd = $("<td>");
 		var newTixTd = $("<td>");
@@ -56,61 +68,50 @@ function addMusicEvents(results) {
 		newTixTd.text(tix);
 
 		newTr.append(newDateTd, newNameTd, newVenueTd, newTixTd);
-			// Now the newTr needs to be added into the HTML
-		$("XXXX").append(newTr)
+		$("#musicBody").append(newTr)
 	}
 };
 
-$.ajax({
-	url: jambaseFullQueryUrl,
-	method: "GET"
-})
-.done(function(response){
-	var results = response.Events;
-	addMusicEvents(results);
-});
+function quandl(){
+	var houseQueryUrl = "https://www.quandl.com/api/v3/datasets/ZILL/";
+	var houseKey = "api_key=y2xh6kV4KLrYCNGRJmSj"
+	var numResults = 10; //number
+	var addLimit = "limit=" + numResults;
 
+	var city = 10001;
+	var format = ".json?"
 
-var houseQueryUrl = "https://www.quandl.com/api/v3/datasets/ZILL/";
-var houseKey = "api_key=y2xh6kV4KLrYCNGRJmSj"
-var numResults = 10; //number
-var addLimit = "limit=" + numResults;
+	var areaType = {
+		city: "C",
+		zipcode: "Z"
+	};
 
-var city = 10001;
-var format = ".json?"
+	var housingType = {
+		allHomes: "_A",
+		singleFamily: "_SF",
+		medianRent: "_RMP",
+		medianListPrice: "_MLP",
+	};
 
-var areaType = {
-	city: "C",
-	zipcode: "Z"
+	var fullQueryZipcode = houseQueryUrl + areaType.zipcode + zipcode + housingType.medianRent + format + houseKey;
+	var fullQueryCity = houseQueryUrl + areaType.city + city + housingType.medianRent + format + houseKey;
+
+	$.ajax({
+		url: fullQueryZipcode,
+		method: "GET",	
+	})
+	.done(function(response){
+		var results = response.dataset.data;
+		addHomeInfo(results);
+	});
 };
-
-var housingType = {
-	allHomes: "_A",
-	singleFamily: "_SF",
-	medianRent: "_RMP",
-	medianListPrice: "_MLP",
-};
-
-var fullQueryZipcode = houseQueryUrl + areaType.zipcode + zipcode + housingType.medianRent + format + houseKey;
-var fullQueryCity = houseQueryUrl + areaType.city + city + housingType.medianRent + format + houseKey;
-
-$.ajax({
-	url: fullQueryZipcode,
-	method: "GET",	
-})
-.done(function(response){
-	var results = response.dataset.data;
-	addHomeInfo(results);
-});
 
 function addHomeInfo(results) {
 	
 	for (var i = 0; i < results.length; i++) {
 		var newTr = $("<tr>");
-		var newDateTd = $("<td>");
+		var newDateTd = $("<td>").addClass("mdl-data-table__cell--non-numeric");
 		var newPriceTd = $("<td>");
-		var newTable = $("<table>");
-		var newTBody = $("<tbody>")
 		var price = results[0][1];
 		var date = moment(results[0][0]).format("MMM YYYY");
 
@@ -118,9 +119,7 @@ function addHomeInfo(results) {
 		newPriceTd.text(price);
 
 		newTr.append(newDateTd, newPriceTd);
-
-			// Now the newTr needs to be added into the HTML
-		$("XXXXX").append(newTable);
+		$("#statsBody").append(newTr);
 	};
 };
 
@@ -133,6 +132,8 @@ $("#citySearch").on("submit", function() {
 	userInput = $("#location").val().trim();
 	$("#location").val("");
 	autoComplete();
+	jambase();
+	quandl();
 });
 
 $("#loginButton").on("click", function(){

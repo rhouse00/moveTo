@@ -10,8 +10,8 @@
     <script defer src="https://code.getmdl.io/1.2.1/material.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/3.5.3/firebase.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.2/moment.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
     <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.orange-light_blue.min.css" />
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
 </head>
 <body>
 
@@ -58,46 +58,32 @@
     <div class="mdl-grid">
         <div class="mdl-cell mdl-cell--6-col" id="map">
             <div class="card-square mdl-card mdl-shadow--4dp">
-                <div class="mdl-card__title mdl-card--expand">
-                    <h2 class="box-title">Map</h2>
+                <h2>Map</h2>
+                <div class="mdl-card__supporting-text">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    Aenan convallis.
                 </div>
                 <div class="mdl-card__actions mdl-card--border">
                     <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect see-more">See More</a>
                 </div>
             </div>
         </div>
-    </div>
 
 <!--Neighbordhood Info grid-->
-    <div class="mdl-grid">
-        <div class="mdl-cell mdl-cell--6-offset mdl-cell--6-col" id="music">
+        <div class="mdl-cell mdl-cell--6-col" id="music">
             <div class="card-square mdl-card mdl-shadow--4dp">
-                <div class="mdl-card__title mdl-card--expand">
-                    <h2 class="box-title">Music Nearby</h2>
-                    <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+                <h2>Music Nearby</h2>
+                <div class="mdl-card__supporting-text">
+                    <table class="mdl-data-table mdl-js-data-table">
                     <thead>
                         <tr>
-                        <th class="mdl-data-table__cell--non-numeric">Material</th>
-                        <th>Quantity</th>
-                        <th>Unit price</th>
+                        <th class="mdl-data-table__cell--non-numeric">Date</th>
+                        <th>Artist</th>
+                        <th>Venue</th>
+                        <th>Tickets</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                        <td class="mdl-data-table__cell--non-numeric">Acrylic (Transparent)</td>
-                        <td>25</td>
-                        <td>$2.90</td>
-                        </tr>
-                        <tr>
-                        <td class="mdl-data-table__cell--non-numeric">Plywood (Birch)</td>
-                        <td>50</td>
-                        <td>$1.25</td>
-                        </tr>
-                        <tr>
-                        <td class="mdl-data-table__cell--non-numeric">Laminate (Gold on Blue)</td>
-                        <td>10</td>
-                        <td>$2.35</td>
-                        </tr>
+                    <tbody id="musicBody">
                     </tbody>
                     </table>
                 </div>
@@ -112,22 +98,32 @@
     <div class="mdl-grid">
         <div class="mdl-cell mdl-cell--6-col" id="weather">
             <div class="card-square mdl-card mdl-shadow--4dp">
-                <div class="mdl-card__title mdl-card--expand">
-                    <h2 class="box-title">Weather</h2>
+                <h2>Weather</h2>
+                <div class="mdl-card__supporting-text">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    Aenan convallis.
                 </div>
                 <div class="mdl-card__actions mdl-card--border">
                     <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect see-more">See More</a>
                 </div>
             </div>
         </div>  
-    </div>
 
-<!--City Stats grid-->
-    <div class="mdl-grid">  
-        <div class="mdl-cell mdl-cell--6-offset mdl-cell--6-col" id="city-stats">
+<!--City Stats grid--> 
+        <div class="mdl-cell mdl-cell--6-col" id="city-stats">
             <div class="card-square mdl-card mdl-shadow--4dp">
-                <div class="mdl-card__title mdl-card--expand">
-                    <h2 class="box-title">City Stats</h2>
+                <h2>City Stats</h2>
+                <div class="mdl-card__supporting-text">
+                    <table class="mdl-data-table mdl-js-data-table">
+                    <thead>
+                        <tr>
+                        <th class="mdl-data-table__cell--non-numeric">Date</th>
+                        <th>Price</th>
+                        </tr>
+                    </thead>
+                    <tbody id="statsBody">
+                    </tbody>
+                    </table>
                 </div>
                 <div class="mdl-card__actions mdl-card--border">
                     <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect see-more">See More</a>

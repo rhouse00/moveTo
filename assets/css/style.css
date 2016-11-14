@@ -9,12 +9,22 @@ body, html {
     padding:0;
 }
 
+h2 {
+    height:10%;
+    font-size:30px;
+    padding:1% 0 3% 3%;
+    margin:0 0 0 0;
+    color:white;
+    background-color:black;
+}
+
 #map,
 #city-stats,
 #music,
 #weather {
     height:250px;
     margin-top:3%;
+    margin-bottom:11%
 }
 
 #search {
@@ -35,22 +45,24 @@ body, html {
 
 .card-square.mdl-card {
   width: 100%;
-  height: 120%;
+  height: 150%;
+  padding:0 0 0 0;
 }
 
 .card-square > .mdl-card__title {
   color: #fff;
   background-color:black;
+  height:50px;
+  padding:0;
 }
 
-.box-title {
-    margin:0 0 40% 0;
-    padding:0;
-    font-size:175%;
+.mdl-card__supporting-text {
+    height:75%;
+    overflow:scroll;
 }
 
 .mdl-card__actions {
-    height:20%;
+    height:15%;
 }
 
 .see-more {
@@ -101,4 +113,8 @@ body, html {
 
 #loginButtonCont {
     height:50px;
+}
+
+table {
+    width:100%;
 }
