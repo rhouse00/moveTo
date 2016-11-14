@@ -14,22 +14,43 @@ var jambasePages = "&page=" + numberPages
 
 var jambaseFullQueryUrl = jambaseQueryUrl + jambaseZipcode + jambasePages + jambaseKey;
 
+function addMusicEvents(results) {
+	for(var i = 0; i < results.length; i++) {
+		var newTr = $("<tr>");
+		var newDateTd = $("<td>");
+		var newNameTd = $("<td>");
+		var newVenueTd = $("<td>");
+		var newTixTd = $("<td>");
+		var date = results[0].Date;
+		var name = results[0].Artists[0].Name;
+		var venue = results[0].Venue.Name;
+		var tix = results[0].TicketUrl;
+
+		newDateTd.text(date);
+		newNameTd.text(name);
+		newVenueTd.text(venue);
+		newTixTd.text(tix);
+
+		newTr.append(newDateTd, newNameTd, newVenueTd, newTixTd);
+		// Now the newTr needs to be added into the HTML
+		$(".jambase").append(newTr)
+	}
+};
+
+
 $.ajax({
 	url: jambaseFullQueryUrl,
 	method: "GET"
 })
 .done(function(response){
 	var results = response.Events;
-	// console.log(results);
-	// console.log(results[i].Artists[i].Name);
-
 	//Date - Artist - Venue - Ticket
-	console.log(results[0].Date);
-	console.log(results[0].Artists[0].Name);
-	console.log(results[0].Venue.Name);
-	console.log(results[0].TicketUrl);
-
-
+	// console.log(results[0].Date);
+	// console.log(results[0].Artists[0].Name);
+	// console.log(results[0].Venue.Name);
+	// console.log(results[0].TicketUrl);
+	addMusicEvents(results);
+	
 });
 
 
@@ -46,10 +67,6 @@ var city = 10001;
 var format = ".json?"
 
 var areaType = {
-	state: "S",
-	county: "CO",
-	metropolitan: "M",
-	neighborhood: "H",
 	city: "C",
 	zipcode: "Z"
 };
@@ -59,8 +76,6 @@ var housingType = {
 	singleFamily: "_SF",
 	medianRent: "_RMP",
 	medianListPrice: "_MLP",
-	medianSalePrice: "_MSP",
-
 };
 
 var fullQueryZipcode = houseQueryUrl + areaType.zipcode + zipcode + housingType.medianRent + format + houseKey;
