@@ -71,13 +71,6 @@ $.ajax({
 });
 
 
-
-
-<<<<<<< HEAD
-=======
-
-
->>>>>>> b26ce0afc47daef44cde820662f1906d5aa4e2b9
 var houseQueryUrl = "https://www.quandl.com/api/v3/datasets/ZILL/";
 var houseKey = "api_key=y2xh6kV4KLrYCNGRJmSj"
 var numResults = 10; //number
@@ -131,12 +124,7 @@ function addHomeInfo(results) {
 	};
 };
 
-<<<<<<< HEAD
-=======
 
-
-
->>>>>>> b26ce0afc47daef44cde820662f1906d5aa4e2b9
 // on enter key
 
 $("#citySearch").on("submit", function() {
