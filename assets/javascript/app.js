@@ -2,6 +2,7 @@
 
 $(".mdl-cell--6-col").hide();
 $("#signOutButton").hide();
+$("#signInButton").hide();
 
 var userInput = "";
 var parsedInput = "";
@@ -225,7 +226,16 @@ function printPastSearches(){
 		button.text(pastSearches[i]);
 		$("#pastSearchesList").append(button);
 	}
-}
+};
+
+function logDisplay(){
+	$("#overlay").hide();
+	$(".card-wide").hide();
+	$("#email").val("");
+	$("#name").val("");
+	$("#password").val("");
+	$("#signOutButton").show();
+};
 
 
 // function initMap() {
@@ -249,7 +259,7 @@ function printPastSearches(){
 
 $("#citySearch").on("submit", function() {
 	$(".mdl-cell--6-col").show();
-	$("#search").css("margin-top", "-2%");
+	$("#search").css("margin-top", "0");
 	userInput = $("#location").val().trim();
 	autoComplete();
 	$("#location").val("");
@@ -262,24 +272,36 @@ $("#citySearch").on("submit", function() {
 
 $("#loginButton").on("click", function(){
 	loginFunction();
-	$("#overlay").hide();
-	$(".card-wide").hide();
-	$("#signOutButton").show();
+	logDisplay();
 });
 
 $("#registerButton").on("click", function(){
 	register();
-	$("#overlay").hide();
-	$(".card-wide").hide();
-	$("#signOutButton").show();
+	logDisplay();
 });
 
 $("#guestButton").on("click", function(){
-	$("#overlay").hide();
-	$(".card-wide").hide();
+	logDisplay();
 	$("#nameDisplay").html("Past Searches");
+	$("#signOutButton").hide();
+	$("#signInButton").show();
 });
 
-$("#signOutButton").on("click", logOut);
+$("#signOutButton").on("click", function(){
+	logOut();
+	$("#overlay").show();
+	$(".card-wide").show();
+	$("#signInButton").hide();
+	$("#signOutButton").hide();
+	$("#nameDisplay").html("");
+});
+
+$("#signInButton").on("click", function(){
+	$("#overlay").show();
+	$(".card-wide").show();
+	$("#signOutButton").hide();
+	$("#signInButton").hide();
+	$("#nameDisplay").html("");
+});
 
 })(this);
