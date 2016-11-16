@@ -38,6 +38,7 @@ function loginFunction(){
 				pastSearches = snapShot.child("pastSearches").val();
 				name = snapShot.child("username").val();
 				$("#nameDisplay").html("Welcome " + name);
+				printPastSearches();
   	    	});
       	}
    	});
@@ -276,6 +277,7 @@ $("#guestButton").on("click", function(){
 	printPastSearches();
 	$("#overlay").hide();
 	$(".card-wide").hide();
+	$("#nameDisplay").html("Past Searches");
 });
 
 $("#signOutButton").on("click", logOut);
