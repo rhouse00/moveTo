@@ -84,6 +84,8 @@ function autoComplete(){
 		var state = placesResponse.predictions[0].terms[1].value;
 		parsedInput = city + ", " + state;
 		$("#city").text(parsedInput);
+		pastSearches.push(parsedInput);
+		printPastSearches();
 	});
 };
 
@@ -249,9 +251,8 @@ $("#citySearch").on("submit", function() {
 	$(".mdl-cell--6-col").show();
 	$("#search").css("margin-top", "-2%");
 	userInput = $("#location").val().trim();
-	pastSearches.push(userInput);
-	$("#location").val("");
 	autoComplete();
+	$("#location").val("");
 	jambase();
 	quandl();
 	googleMap();
@@ -274,7 +275,6 @@ $("#registerButton").on("click", function(){
 });
 
 $("#guestButton").on("click", function(){
-	printPastSearches();
 	$("#overlay").hide();
 	$(".card-wide").hide();
 	$("#nameDisplay").html("Past Searches");
