@@ -1,10 +1,73 @@
 (function(){
 
 $(".mdl-cell--6-col").hide();
+$("#signOutButton").hide();
+$("#signInButton").hide();
 
 var userInput = "";
 var parsedInput = "";
 var zipcode = userInput;
+
+
+
+// Login logic
+
+var config = {
+    apiKey: "AIzaSyBYWTeOhT42zgZZnA21IcyAQ10pNAtQaWs",
+    authDomain: "angulardev-699fa.firebaseapp.com",
+    databaseURL: "https://angulardev-699fa.firebaseio.com",
+    storageBucket: "angulardev-699fa.appspot.com",
+    messagingSenderId: "527207620597"
+};
+
+firebase.initializeApp(config);
+var database = firebase.database();
+
+var name = "";
+var email = "";
+var password = "";
+var id = "";
+var pastSearches = [];
+
+function loginFunction(){
+    email = $("#email").val();
+    password = $("#password").val();
+
+    firebase.auth().signInWithEmailAndPassword(email, password).then(function(firebaseUser) {  
+  	    if (firebaseUser) {
+     	 	id =  firebaseUser.uid;	
+  	    	database.ref(id).once('value').then(function(snapShot){ 
+				pastSearches = snapShot.child("pastSearches").val();
+				name = snapShot.child("username").val();
+				$("#nameDisplay").html("Welcome " + name);
+				printPastSearches();
+  	    	});
+      	}
+   	});
+};
+
+function register(){
+    email = $("#email").val();
+    password = $("#password").val();
+    name = $("#name").val();
+	$("#nameDisplay").html("Welcome " + name);
+    	
+    firebase.auth().createUserWithEmailAndPassword(email, password).then(function(firebaseUser) {	
+		if (firebaseUser) {
+			var id =  firebaseUser.uid;
+				database.ref(id).set({userID: id, username: name})
+		} else {
+			console.log("No user!")
+		}   
+	});
+}
+
+function logOut(){
+	database.ref(id).child("pastSearches").set(pastSearches);
+	firebase.auth().signOut()
+	pastSearches = [];
+}
+
 
 // Autocomplete to get the perfectly parsed city name 
 function autoComplete(){
@@ -23,6 +86,8 @@ function autoComplete(){
 		var state = placesResponse.predictions[0].terms[1].value;
 		parsedInput = city + ", " + state;
 		$("#city").text(parsedInput);
+		pastSearches.push(parsedInput);
+		printPastSearches();
 	});
 };
 
@@ -47,6 +112,8 @@ function jambase(){
 	});
 };
 
+// music event function
+
 function addMusicEvents(results) {
 	$("#musicBody").empty();
 	for(var i = 0; i < 15; i++) {
@@ -69,6 +136,9 @@ function addMusicEvents(results) {
 		$("#musicBody").append(newTr)
 	}
 };
+
+
+// Quandl function
 
 function quandl(){
 	var houseQueryUrl = "https://crossorigin.me/https://www.quandl.com/api/v3/datasets/ZILL/";
@@ -105,6 +175,9 @@ function quandl(){
 	});
 };
 
+
+// Home info function
+
 function addHomeInfo(results) {
 	$("#statsBody").empty();
 	for (var i = 0; i < results.length; i++) {
@@ -122,6 +195,9 @@ function addHomeInfo(results) {
 	};
 };
 
+
+// Google Map function
+
 function googleMap () {
 	$(".googleMapDiv").empty();
 	var mapUrl = "https://maps.googleapis.com/maps/api/staticmap?center=";
@@ -136,6 +212,25 @@ function googleMap () {
 
 	console.log(userInput);
 	console.log(fullMapUrl);
+};
+
+function printPastSearches(){
+	$("#pastSearchesList").empty();
+	for (var i = 0; i < pastSearches.length; i++) {
+		var button = $("<a>");
+		button.addClass("mdl-button mdl-js-button mdl-js-ripple-effect");
+		button.text(pastSearches[i]);
+		$("#pastSearchesList").append(button);
+	}
+};
+
+function logDisplay(){
+	$("#overlay").hide();
+	$(".card-wide").hide();
+	$("#email").val("");
+	$("#name").val("");
+	$("#password").val("");
+	$("#signOutButton").show();
 };
 
 
@@ -187,26 +282,50 @@ function addWeather (response) {
 
 $("#citySearch").on("submit", function() {
 	$(".mdl-cell--6-col").show();
-	$("#search").css("margin-top", "-2%");
+	$("#search").css("margin-top", "0");
 	userInput = $("#location").val().trim();
-	$("#location").val("");
 	autoComplete();
+	$("#location").val("");
 	jambase();
 	quandl();
 	googleMap();
 	weatherInfo();
+	printPastSearches();
 	// initMap();
 });
 
 $("#loginButton").on("click", function(){
-	$("#overlay").hide();
-	$(".card-wide").hide();
+	loginFunction();
+	logDisplay();
 });
 
 $("#registerButton").on("click", function(){
-	$("#overlay").hide();
-	$(".card-wide").hide();
+	register();
+	logDisplay();
 });
 
+$("#guestButton").on("click", function(){
+	logDisplay();
+	$("#nameDisplay").html("Past Searches");
+	$("#signOutButton").hide();
+	$("#signInButton").show();
+});
+
+$("#signOutButton").on("click", function(){
+	logOut();
+	$("#overlay").show();
+	$(".card-wide").show();
+	$("#signInButton").hide();
+	$("#signOutButton").hide();
+	$("#nameDisplay").html("");
+});
+
+$("#signInButton").on("click", function(){
+	$("#overlay").show();
+	$(".card-wide").show();
+	$("#signOutButton").hide();
+	$("#signInButton").hide();
+	$("#nameDisplay").html("");
+});
 
 })(this);

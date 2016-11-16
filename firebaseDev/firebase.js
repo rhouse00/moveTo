@@ -81,8 +81,8 @@ function logOut(firebaseUser){
      		 console.log("No user!")
      	 }
  	    
-		});
-}
+	});
+	}
 }());
 
 

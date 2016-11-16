@@ -108,7 +108,7 @@ h2 {
 }
 
 .card-wide {
-    margin:-250px 25% 0 25%;
+    margin:-350px 25% 0 25%;
 }
 
 #loginButtonCont {
@@ -120,5 +120,5 @@ table {
 }
 
 #loginArea {
-    height:30%;
+    height:50%;
 }
