@@ -7,7 +7,7 @@
 
     $(document).on("click", "#logOut" , logOut);
 
-	 var config = {
+	var config = {
     apiKey: "AIzaSyBYWTeOhT42zgZZnA21IcyAQ10pNAtQaWs",
     authDomain: "angulardev-699fa.firebaseapp.com",
     databaseURL: "https://angulardev-699fa.firebaseio.com",

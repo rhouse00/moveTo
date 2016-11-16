@@ -57,10 +57,10 @@ function addMusicEvents(results) {
 		var newNameTd = $("<td>");
 		var newVenueTd = $("<td>");
 		var newTixTd = $("<td>");
-		var date = moment(results[0].Date).format("MMM YYYY");
-		var name = results[0].Artists[0].Name;
-		var venue = results[0].Venue.Name;
-		var tix = results[0].TicketUrl;
+		var date = moment(results[i].Date).format("MMM YYYY");
+		var name = results[i].Artists[0].Name;
+		var venue = results[i].Venue.Name;
+		var tix = results[i].TicketUrl;
 
 		newDateTd.text(date);
 		newNameTd.text(name);
@@ -143,6 +143,10 @@ $("#loginButton").on("click", function(){
 	$(".card-wide").hide();
 });
 
+$("#registerButton").on("click", function(){
+	$("#overlay").hide();
+	$(".card-wide").hide();
+});
 
 
 })(this);
