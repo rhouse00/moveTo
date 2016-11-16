@@ -28,7 +28,7 @@ function autoComplete(){
 // Google Maps API Key = AIzaSyCXUJGafVbCwieSLcNI2KUw-gkJ-eh0ig0
 
 //<script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"></script>
-var zipcode = 90028;
+var zipcode = 90210;
 
 function jambase(){
 
@@ -47,17 +47,18 @@ function jambase(){
 	.done(function(response){
 		var results = response.Events;
 		addMusicEvents(results);
+		console.log(response);
 	});
 };
 
 function addMusicEvents(results) {
-	for(var i = 0; i < results.length; i++) {
+	for(var i = 0; i < 15; i++) {
 		var newTr = $("<tr>");
 		var newDateTd = $("<td>").addClass("mdl-data-table__cell--non-numeric");
 		var newNameTd = $("<td>");
 		var newVenueTd = $("<td>");
 		var newTixTd = $("<td>");
-		var date = moment(results[i].Date).format("MMM YYYY");
+		var date = moment(results[i].Date).format("MMM Do YY");
 		var name = results[i].Artists[0].Name;
 		var venue = results[i].Venue.Name;
 		var tix = results[i].TicketUrl;
@@ -96,7 +97,7 @@ function quandl(){
 	var fullQueryZipcode = houseQueryUrl + areaType.zipcode + zipcode + housingType.medianRent + format + houseKey;
 	var fullQueryCity = houseQueryUrl + areaType.city + city + housingType.medianRent + format + houseKey;
 
-	console.log(fullQueryZipcode);
+	// console.log(fullQueryZipcode);
 
 	$.ajax({
 		url: fullQueryZipcode,
@@ -125,6 +126,39 @@ function addHomeInfo(results) {
 	};
 };
 
+function googleMap () {
+	$(".googleMapDiv").empty();
+	var mapUrl = "https://maps.googleapis.com/maps/api/staticmap?center=";
+	var zoom = "&zoom=14";
+	var size = "&size=425x275&scale=1"
+	var googleKey = "&key=AIzaSyAau6LZg7LxUiZ0KjzV_srJ3Ko37t7C1f4";
+	var fullMapUrl = mapUrl + userInput + zoom + size + googleKey;
+	var newMap = $("<img>");
+
+	newMap.attr("src", fullMapUrl);
+	$(".googleMapDiv").append(newMap);
+
+	console.log(userInput);
+	console.log(fullMapUrl);
+};
+
+
+// function initMap() {
+//     var uluru = "los+Angeles"
+//     var map = new google.maps.map(document.getElementById('googleMapDiv'), {
+//       zoom: 2,
+//       center: userInput
+//     });
+//     var marker = new google.maps.Marker({
+//       position: uluru,
+//       map: map
+//     });
+//     console.log(uluru);
+// };
+
+
+
+
 
 // on enter key
 
@@ -136,6 +170,8 @@ $("#citySearch").on("submit", function() {
 	autoComplete();
 	jambase();
 	quandl();
+	googleMap();
+	// initMap();
 });
 
 $("#loginButton").on("click", function(){
