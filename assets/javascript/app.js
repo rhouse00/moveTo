@@ -4,6 +4,7 @@ $(".mdl-cell--6-col").hide();
 
 var userInput = "";
 var parsedInput = "";
+var zipcode = userInput;
 
 // Autocomplete to get the perfectly parsed city name 
 function autoComplete(){
@@ -25,16 +26,11 @@ function autoComplete(){
 	});
 };
 
-// Google Maps API Key = AIzaSyCXUJGafVbCwieSLcNI2KUw-gkJ-eh0ig0
-
-//<script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"></script>
-var zipcode = 90210;
-
 function jambase(){
 
 	var jambaseKey = "&api_key=9jb9b7n5gjuehm3kah3zqe4b&o=json";
 	var jambaseQueryUrl = "https://crossorigin.me/http://api.jambase.com/events?";
-	var jambaseZipcode = "zipCode=" + zipcode;
+	var jambaseZipcode = "zipcode=" + userInput;
 	var numberPages = 0;
 	var jambasePages = "&page=" + numberPages
 
@@ -52,6 +48,7 @@ function jambase(){
 };
 
 function addMusicEvents(results) {
+	$("#musicBody").empty();
 	for(var i = 0; i < 15; i++) {
 		var newTr = $("<tr>");
 		var newDateTd = $("<td>").addClass("mdl-data-table__cell--non-numeric");
@@ -74,7 +71,7 @@ function addMusicEvents(results) {
 };
 
 function quandl(){
-	var houseQueryUrl = "https://www.quandl.com/api/v3/datasets/ZILL/";
+	var houseQueryUrl = "https://crossorigin.me/https://www.quandl.com/api/v3/datasets/ZILL/";
 	var houseKey = "api_key=y2xh6kV4KLrYCNGRJmSj"
 	var numResults = 10; //number
 	var addLimit = "limit=" + numResults;
@@ -94,10 +91,8 @@ function quandl(){
 		medianListPrice: "_MLP",
 	};
 
-	var fullQueryZipcode = houseQueryUrl + areaType.zipcode + zipcode + housingType.medianRent + format + houseKey;
-	var fullQueryCity = houseQueryUrl + areaType.city + city + housingType.medianRent + format + houseKey;
-
-	// console.log(fullQueryZipcode);
+	var fullQueryZipcode = houseQueryUrl + areaType.zipcode + userInput + housingType.allHomes + format + houseKey;
+	var fullQueryCity = houseQueryUrl + areaType.city + userInput + housingType.medianRent + format + houseKey;
 
 	$.ajax({
 		url: fullQueryZipcode,
@@ -105,12 +100,13 @@ function quandl(){
 	})
 	.done(function(response){
 		var results = response.dataset.data;
+		console.log(results);
 		addHomeInfo(results);
 	});
 };
 
 function addHomeInfo(results) {
-	
+	$("#statsBody").empty();
 	for (var i = 0; i < results.length; i++) {
 		var newTr = $("<tr>");
 		var newDateTd = $("<td>").addClass("mdl-data-table__cell--non-numeric");
@@ -156,8 +152,35 @@ function googleMap () {
 //     console.log(uluru);
 // };
 
+function weatherInfo () {
+	var weatherKey = "&APPID=d08b9cd3e13cf6b5a305591b965112f6"
+	var numResults = "&cnt=" + 16
+	var weatherQueryUrl = "http://api.openweathermap.org/data/2.5/forecast/daily?q=" + userInput + numResults + weatherKey;
+	$.ajax({
+		url: weatherQueryUrl,
+		method: "GET"
+	})
+	.done (function(response){
+		addWeather(response);
+	});
+};
 
+function addWeather (response) {
+	var results = response.list;
+	for (var i = 0; i < results.length; i++) {
+		var temp = response.list[i].temp.day * 9/5 - 459.67; //farenheit
+		var date = moment.unix(response.list[i].dt).format("MMM Do YYYY");
+		var newTr = $("<tr>");
+		var newTempTd = $("<td>");
+		var newDateTd = $("<td>");
 
+		newTempTd.text(temp);
+		newDateTd.text(date);
+
+		$(newTr).append(newTempTd, newDateTd);
+		$(".WEATHERclassINFOinsertHEREmatt!!!!!!").append(newTr);
+	}
+}
 
 
 // on enter key
@@ -171,6 +194,7 @@ $("#citySearch").on("submit", function() {
 	jambase();
 	quandl();
 	googleMap();
+	weatherInfo();
 	// initMap();
 });
 
