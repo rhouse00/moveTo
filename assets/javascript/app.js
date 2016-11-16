@@ -4,6 +4,60 @@ $(".mdl-cell--6-col").hide();
 
 var userInput = "";
 var parsedInput = "";
+var zipcode = 90210;
+
+
+// Login logic
+
+var config = {
+    apiKey: "AIzaSyBYWTeOhT42zgZZnA21IcyAQ10pNAtQaWs",
+    authDomain: "angulardev-699fa.firebaseapp.com",
+    databaseURL: "https://angulardev-699fa.firebaseio.com",
+    storageBucket: "angulardev-699fa.appspot.com",
+    messagingSenderId: "527207620597"
+};
+
+firebase.initializeApp(config);
+var database = firebase.database();
+
+var name, email, password, id;
+var pastSearches = [];
+
+function loginFunction(){
+    email = $("#email").val();
+    password = $("#password").val();
+
+    firebase.auth().signInWithEmailAndPassword(email, password).then(function(firebaseUser) {  
+  	    if (firebaseUser) {
+     	 	id =  firebaseUser.uid;	
+  	    	database.ref(id).once('value').then(function(snapShot){ 
+				pastSearches = snapShot.child("pastSearches").val();
+  	    	});
+      	}
+   	});
+};
+
+function register(){
+    email = $("#email").val();
+    password = $("#password").val();
+    name = $("#name").val();
+    	
+    firebase.auth().createUserWithEmailAndPassword(email, password).then(function(firebaseUser) {	
+		if (firebaseUser) {
+			var id =  firebaseUser.uid;
+				database.ref(id).set({userID: id, username:name})
+		} else {
+			console.log("No user!")
+		}   
+	});
+}
+
+function logOut(){
+	database.ref(id).child("pastSearches").set(pastSearches);
+	firebase.auth().signOut()
+	pastSearches = [];
+}
+
 
 // Autocomplete to get the perfectly parsed city name 
 function autoComplete(){
@@ -25,10 +79,10 @@ function autoComplete(){
 	});
 };
 
+
 // Google Maps API Key = AIzaSyCXUJGafVbCwieSLcNI2KUw-gkJ-eh0ig0
 
 //<script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"></script>
-var zipcode = 90210;
 
 function jambase(){
 
@@ -51,6 +105,8 @@ function jambase(){
 	});
 };
 
+// music event function
+
 function addMusicEvents(results) {
 	for(var i = 0; i < 15; i++) {
 		var newTr = $("<tr>");
@@ -72,6 +128,9 @@ function addMusicEvents(results) {
 		$("#musicBody").append(newTr)
 	}
 };
+
+
+// Quandl function
 
 function quandl(){
 	var houseQueryUrl = "https://www.quandl.com/api/v3/datasets/ZILL/";
@@ -109,6 +168,9 @@ function quandl(){
 	});
 };
 
+
+// Home info function
+
 function addHomeInfo(results) {
 	
 	for (var i = 0; i < results.length; i++) {
@@ -125,6 +187,9 @@ function addHomeInfo(results) {
 		$("#statsBody").append(newTr);
 	};
 };
+
+
+// Google Map function
 
 function googleMap () {
 	$(".googleMapDiv").empty();
@@ -171,18 +236,22 @@ $("#citySearch").on("submit", function() {
 	jambase();
 	quandl();
 	googleMap();
+	console.log(pastSearches);
 	// initMap();
 });
 
 $("#loginButton").on("click", function(){
+	loginFunction();
 	$("#overlay").hide();
 	$(".card-wide").hide();
 });
 
 $("#registerButton").on("click", function(){
+	register();
 	$("#overlay").hide();
 	$(".card-wide").hide();
 });
 
+$("#testButton").on("click", logOut);
 
 })(this);
