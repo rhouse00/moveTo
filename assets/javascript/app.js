@@ -1,6 +1,7 @@
 (function(){
 
 $(".mdl-cell--6-col").hide();
+$("#signOutButton").hide();
 
 var userInput = "";
 var parsedInput = "";
@@ -20,7 +21,10 @@ var config = {
 firebase.initializeApp(config);
 var database = firebase.database();
 
-var name, email, password, id;
+var name = "";
+var email = "";
+var password = "";
+var id = "";
 var pastSearches = [];
 
 function loginFunction(){
@@ -32,6 +36,8 @@ function loginFunction(){
      	 	id =  firebaseUser.uid;	
   	    	database.ref(id).once('value').then(function(snapShot){ 
 				pastSearches = snapShot.child("pastSearches").val();
+				name = snapShot.child("username").val();
+				$("#nameDisplay").html("Welcome " + name);
   	    	});
       	}
    	});
@@ -41,11 +47,12 @@ function register(){
     email = $("#email").val();
     password = $("#password").val();
     name = $("#name").val();
+	$("#nameDisplay").html("Welcome " + name);
     	
     firebase.auth().createUserWithEmailAndPassword(email, password).then(function(firebaseUser) {	
 		if (firebaseUser) {
 			var id =  firebaseUser.uid;
-				database.ref(id).set({userID: id, username:name})
+				database.ref(id).set({userID: id, username: name})
 		} else {
 			console.log("No user!")
 		}   
@@ -207,6 +214,16 @@ function googleMap () {
 	console.log(fullMapUrl);
 };
 
+function printPastSearches(){
+	$("#pastSearchesList").empty();
+	for (var i = 0; i < pastSearches.length; i++) {
+		var button = $("<a>");
+		button.addClass("mdl-button mdl-js-button mdl-js-ripple-effect");
+		button.text(pastSearches[i]);
+		$("#pastSearchesList").append(button);
+	}
+}
+
 
 // function initMap() {
 //     var uluru = "los+Angeles"
@@ -231,12 +248,13 @@ $("#citySearch").on("submit", function() {
 	$(".mdl-cell--6-col").show();
 	$("#search").css("margin-top", "-2%");
 	userInput = $("#location").val().trim();
+	pastSearches.push(userInput);
 	$("#location").val("");
 	autoComplete();
 	jambase();
 	quandl();
 	googleMap();
-	console.log(pastSearches);
+	printPastSearches();
 	// initMap();
 });
 
@@ -244,14 +262,22 @@ $("#loginButton").on("click", function(){
 	loginFunction();
 	$("#overlay").hide();
 	$(".card-wide").hide();
+	$("#signOutButton").show();
 });
 
 $("#registerButton").on("click", function(){
 	register();
 	$("#overlay").hide();
 	$(".card-wide").hide();
+	$("#signOutButton").show();
 });
 
-$("#testButton").on("click", logOut);
+$("#guestButton").on("click", function(){
+	printPastSearches();
+	$("#overlay").hide();
+	$(".card-wide").hide();
+});
+
+$("#signOutButton").on("click", logOut);
 
 })(this);
