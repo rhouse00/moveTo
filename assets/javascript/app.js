@@ -179,6 +179,10 @@ $("#loginButton").on("click", function(){
 	$(".card-wide").hide();
 });
 
+$("#registerButton").on("click", function(){
+	$("#overlay").hide();
+	$(".card-wide").hide();
+});
 
 
 })(this);
