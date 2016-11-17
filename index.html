@@ -41,7 +41,7 @@
                     <form action="#" id="citySearch">
                         <div class="mdl-textfield mdl-js-textfield" id="searchBar">
                             <input class="mdl-textfield__input" type="text" id="location">
-                            <label class="mdl-textfield__label" for="location" id="dummyText">City...</label>
+                            <label class="mdl-textfield__label" for="location" id="dummyText">City, State...</label>
                         </div>
                     </form>
                 </div>
@@ -104,9 +104,9 @@
                             <thead>
                                 <tr>
                                 <th class="mdl-data-table__cell--non-numeric">Date</th>
-                                <th>Artist</th>
-                                <th>Venue</th>
-                                <th>Tickets</th>
+                                <th class="mdl-data-table__cell--non-numeric">Artist</th>
+                                <th class="mdl-data-table__cell--non-numeric">Tickets</th>
+                                <th class="mdl-data-table__cell--non-numeric">Venue</th>
                                 </tr>
                             </thead>
                             <tbody id="musicBody">
@@ -123,8 +123,18 @@
                     <div class="card-square mdl-card mdl-shadow--4dp">
                         <h2>Weather</h2>
                         <div class="supporting-text">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                            Aenan convallis.
+                            <table class="mdl-data-table mdl-js-data-table">
+                            <thead>
+                                <tr>
+                                <th class="mdl-data-table__cell--non-numeric">Date</th>
+                                <th class="mdl-data-table__cell--non-numeric">Weather</th>
+                                <th class="mdl-data-table__cell--non-numeric">High Temp (F)</th>
+                                <th class="mdl-data-table__cell--non-numeric">Low Temp (F)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="weatherBody">
+                            </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>  
@@ -138,7 +148,7 @@
                             <thead>
                                 <tr>
                                 <th class="mdl-data-table__cell--non-numeric">Date</th>
-                                <th>Average Monthly Rent</th>
+                                <th class="mdl-data-table__cell--non-numeric">Average Monthly Rent</th>
                                 </tr>
                             </thead>
                             <tbody id="statsBody">

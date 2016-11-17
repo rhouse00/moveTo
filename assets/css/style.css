@@ -127,3 +127,12 @@ table {
     height:100%;
     width:100%;
 }
+
+.mdl-data-table td {
+    text-align: left;
+}
+
+#signInButton,
+#signOutButton {
+    color:white;
+}

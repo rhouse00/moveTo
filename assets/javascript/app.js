@@ -7,6 +7,9 @@ $("#signInButton").hide();
 var userInput = "";
 var parsedInput = "";
 var cityCode;
+var city;
+var state;
+var zipcode;
 
 
 
@@ -70,10 +73,10 @@ function logOut(){
 
 
 // Autocomplete to get the perfectly parsed city name 
-function autoComplete(){
+function autoComplete(input){
 	var placesKey = "&key=AIzaSyCosNzeaDeb3bNZKdVQMu8AJxzQxaL6jDo";
 	var placesUrl = "https://crossorigin.me/https://maps.googleapis.com/maps/api/place/autocomplete/json?";
-	var placesInput = "input=" + userInput;
+	var placesInput = "input=" + input;
 	var placesType = "&types=geocode";
 
 	var placesQueryUrl = placesUrl + placesInput + placesType + placesKey;
@@ -82,8 +85,8 @@ function autoComplete(){
 		url: placesQueryUrl,
 		method:"GET"
 	}).done(function(placesResponse){
-		var city = placesResponse.predictions[0].terms[0].value;
-		var state = placesResponse.predictions[0].terms[1].value;
+		city = placesResponse.predictions[0].terms[0].value;
+		state = placesResponse.predictions[0].terms[1].value;
 		parsedInput = city + ", " + state;
 		$("#city").text(parsedInput);
 		pastSearches.push(parsedInput);
@@ -91,11 +94,28 @@ function autoComplete(){
 	});
 };
 
+function zipcodeFinder (){
+	var zipcodeKey = "l24t8gV4cPlE14PoXJK9IfKnrGjaY8PkbTNk9IpmyK0zPPXMzIWhYGFqnZBm8qGj";
+	var zipcodeQueryUrl = "https://crossorigin.me/https://www.zipcodeapi.com/rest/";
+	var zipcodeCity = "/city-zips.json/" + city;
+	var zipcodeState = "/"+ state + ".";
+	
+	var zipcodeFullQueryUrl = zipcodeQueryUrl +zipcodeKey + zipcodeCity + zipcodeState;
+
+	// $.ajax({
+	// 	url: zipcodeFullQueryUrl,
+	// 	method: "GET"
+	// }).done(function(response){
+	// 	var randomNumber = Math.floor(Math.random() * response.zip_codes.length) + 1;
+	// 	zipcode = response.zip_codes[randomNumber];
+	// });
+};
+
 function jambase(){
 
 	var jambaseKey = "&api_key=9jb9b7n5gjuehm3kah3zqe4b&o=json";
 	var jambaseQueryUrl = "https://crossorigin.me/http://api.jambase.com/events?";
-	var jambaseZipcode = "zipcode=" + userInput;
+	var jambaseZipcode = "zipcode=" + zipcode;
 	var numberPages = 0;
 	var jambasePages = "&page=" + numberPages
 
@@ -108,7 +128,6 @@ function jambase(){
 	// .done(function(response){
 	// 	var results = response.Events;
 	// 	addMusicEvents(results);
-	// 	console.log(response);
 	// });
 };
 
@@ -126,13 +145,17 @@ function addMusicEvents(results) {
 		var name = results[i].Artists[0].Name;
 		var venue = results[i].Venue.Name;
 		var tix = results[i].TicketUrl;
+		var tixLink = $("<a>");
 
 		newDateTd.text(date);
 		newNameTd.text(name);
 		newVenueTd.text(venue);
-		newTixTd.text(tix);
+		tixLink.text("Tickets");
+		tixLink.attr("href", tix);
+		tixLink.attr("target", "_blank");
+		newTixTd.append(tixLink);
 
-		newTr.append(newDateTd, newNameTd, newVenueTd, newTixTd);
+		newTr.append(newDateTd, newNameTd, newTixTd, newVenueTd);
 		$("#musicBody").append(newTr)
 	}
 };
@@ -161,7 +184,7 @@ function quandl(){
 		medianListPrice: "_MLP",
 	};
 
-	var fullQueryZipcode = houseQueryUrl + areaType.zipcode + userInput + housingType.allHomes + format + houseKey;
+	// var fullQueryZipcode = houseQueryUrl + areaType.zipcode + zipcode + housingType.allHomes + format + houseKey;
 	var fullQueryCity = houseQueryUrl + areaType.city + cityCode + housingType.medianRent + format + houseKey;
 
 	// $.ajax({
@@ -170,7 +193,6 @@ function quandl(){
 	// })
 	// .done(function(response){
 	// 	var results = response.dataset.data;
-	// 	console.log(results);
 	// 	addHomeInfo(results);
 	// });
 };
@@ -226,20 +248,25 @@ function googleMap () {
 	var size = "&size=425x275&scale=1"
 	var googleKey = "&key=AIzaSyAau6LZg7LxUiZ0KjzV_srJ3Ko37t7C1f4";
 	var fullMapUrl = mapUrl + userInput + zoom + size + googleKey;
+	var mapLink = $("<a>");
 	var newMap = $("<img>");
 
 	newMap.attr("src", fullMapUrl);
 	newMap.addClass("googleMap");
-	$(".googleMapDiv").append(newMap);
+	mapLink.append(newMap);
+	mapLink.attr("href", "https://www.google.com/maps/place/"+userInput);
+	mapLink.attr("target", "_blank");
+	$(".googleMapDiv").append(mapLink);
 };
 
 function printPastSearches(){
 	$("#pastSearchesList").empty();
 	for (var i = 0; i < pastSearches.length; i++) {
 		var button = $("<a>");
-		button.addClass("mdl-button mdl-js-button mdl-js-ripple-effect");
+		button.addClass("mdl-button mdl-js-button mdl-js-ripple-effect past-search");
 		button.text(pastSearches[i]);
-		$("#pastSearchesList").append(button);
+		button.attr("data-term", pastSearches[i]);
+		$("#pastSearchesList").prepend(button);
 	}
 };
 
@@ -275,18 +302,25 @@ function weatherInfo () {
 
 function addWeather (response) {
 	var results = response.list;
+	$("#weatherBody").empty();
 	for (var i = 0; i < results.length; i++) {
-		var temp = response.list[i].temp.day * 9/5 - 459.67; //farenheit
+		var high = Math.ceil(response.list[i].temp.max * 9/5 - 459.67); //farenheit
+		var low = Math.ceil(response.list[i].temp.min  * 9/5 - 459.67);
 		var date = moment.unix(response.list[i].dt).format("MMM Do YYYY");
+		var image = response.list[i].weather[0].icon;
 		var newTr = $("<tr>");
-		var newTempTd = $("<td>");
 		var newDateTd = $("<td>");
+		var newWeatherTd = $("<img>")
+		var newHighTd = $("<td>");
+		var newLowTd = $("<td>");
 
-		newTempTd.text(temp);
+		newWeatherTd.attr("src", "http://openweathermap.org/img/w/"+image+".png");
 		newDateTd.text(date);
+		newHighTd.text(high);
+		newLowTd.text(low);
 
-		$(newTr).append(newTempTd, newDateTd);
-		$(".WEATHERclassINFOinsertHEREmatt!!!!!!").append(newTr);
+		$(newTr).append(newDateTd, newWeatherTd, newHighTd, newLowTd);
+		$("#weatherBody").append(newTr);
 	}
 }
 
@@ -297,11 +331,12 @@ $("#citySearch").on("submit", function() {
 	$(".mdl-cell--6-col").show();
 	$("#search").css("margin-top", "0");
 	userInput = $("#location").val().trim();
-	autoComplete();
+	autoComplete(userInput);
 	$("#location").val("");
+	setTimeout(zipcodeFinder, 1000);
 	checkInput(userInput);
-	jambase();
-	setTimeout(quandl, 1000);
+	setTimeout(jambase, 2000);
+	setTimeout(quandl, 2000);
 	googleMap();
 	weatherInfo();
 	printPastSearches();
@@ -354,5 +389,21 @@ function logDisplay(){
 	$("#password").val("");
 	$("#signOutButton").show();
 };
+
+$(document).on("click", ".past-search", function(){
+	userInput = $(this).data("term");
+	for (var i = 0; i < pastSearches.length; i++) {
+		if (userInput === pastSearches[i]){
+			pastSearches.splice(i, 1);
+		};
+	};
+	autoComplete(userInput);
+	checkInput(userInput);
+	jambase();
+	setTimeout(quandl, 1000);
+	googleMap();
+	weatherInfo();
+	return false;
+})
 
 })(this);
