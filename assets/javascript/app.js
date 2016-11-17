@@ -6,7 +6,7 @@ $("#signInButton").hide();
 
 var userInput = "";
 var parsedInput = "";
-var cityCode = 10001;
+var cityCode;
 
 
 
@@ -193,7 +193,7 @@ function getCityCode (userInput) {
 				return cityCode;
 			}
 		});
-		console.log(inputCityCode.Code);
+		cityCode = inputCityCode.Code;
 	});
 };
 
@@ -229,6 +229,7 @@ function googleMap () {
 	var newMap = $("<img>");
 
 	newMap.attr("src", fullMapUrl);
+	newMap.addClass("googleMap");
 	$(".googleMapDiv").append(newMap);
 };
 
@@ -298,12 +299,12 @@ $("#citySearch").on("submit", function() {
 	userInput = $("#location").val().trim();
 	autoComplete();
 	$("#location").val("");
+	checkInput(userInput);
 	jambase();
-	quandl();
+	setTimeout(quandl, 1000);
 	googleMap();
 	weatherInfo();
 	printPastSearches();
-	cityCode = checkInput(userInput);
 	return false;
 	// initMap();
 });
