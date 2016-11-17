@@ -344,6 +344,23 @@ $("#citySearch").on("submit", function() {
 	// initMap();
 });
 
+$(document).on("click", ".past-search", function(){
+	userInput = $(this).data("term");
+	for (var i = 0; i < pastSearches.length; i++) {
+		if (userInput === pastSearches[i]){
+			pastSearches.splice(i, 1);
+		};
+	};
+	autoComplete(userInput);
+	setTimeout(zipcodeFinder, 1000);
+	checkInput(userInput);
+	setTimeout(jambase, 2000);
+	setTimeout(quandl, 2000);
+	googleMap();
+	weatherInfo();
+	return false;
+})
+
 
 // button functionalities
 
@@ -365,12 +382,12 @@ $("#guestButton").on("click", function(){
 });
 
 $("#signOutButton").on("click", function(){
-	logOut();
 	$("#overlay").show();
 	$(".card-wide").show();
 	$("#signInButton").hide();
 	$("#signOutButton").hide();
 	$("#nameDisplay").html("");
+	logOut();
 });
 
 $("#signInButton").on("click", function(){
@@ -379,6 +396,7 @@ $("#signInButton").on("click", function(){
 	$("#signOutButton").hide();
 	$("#signInButton").hide();
 	$("#nameDisplay").html("");
+	$(".card-wide").css("margin-top", "-150px");
 });
 
 function logDisplay(){
@@ -389,21 +407,5 @@ function logDisplay(){
 	$("#password").val("");
 	$("#signOutButton").show();
 };
-
-$(document).on("click", ".past-search", function(){
-	userInput = $(this).data("term");
-	for (var i = 0; i < pastSearches.length; i++) {
-		if (userInput === pastSearches[i]){
-			pastSearches.splice(i, 1);
-		};
-	};
-	autoComplete(userInput);
-	checkInput(userInput);
-	jambase();
-	setTimeout(quandl, 1000);
-	googleMap();
-	weatherInfo();
-	return false;
-})
 
 })(this);
