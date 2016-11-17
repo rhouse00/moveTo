@@ -6,7 +6,7 @@ $("#signInButton").hide();
 
 var userInput = "";
 var parsedInput = "";
-var zipcode = userInput;
+var cityCode = 10001;
 
 
 
@@ -101,15 +101,15 @@ function jambase(){
 
 	var jambaseFullQueryUrl = jambaseQueryUrl + jambaseZipcode + jambasePages + jambaseKey;
 
-	$.ajax({
-		url: jambaseFullQueryUrl,
-		method: "GET"
-	})
-	.done(function(response){
-		var results = response.Events;
-		addMusicEvents(results);
-		console.log(response);
-	});
+	// $.ajax({
+	// 	url: jambaseFullQueryUrl,
+	// 	method: "GET"
+	// })
+	// .done(function(response){
+	// 	var results = response.Events;
+	// 	addMusicEvents(results);
+	// 	console.log(response);
+	// });
 };
 
 // music event function
@@ -143,7 +143,7 @@ function addMusicEvents(results) {
 function quandl(){
 	var houseQueryUrl = "https://crossorigin.me/https://www.quandl.com/api/v3/datasets/ZILL/";
 	var houseKey = "api_key=y2xh6kV4KLrYCNGRJmSj"
-	var numResults = 10; //number
+	var numResults = 10;
 	var addLimit = "limit=" + numResults;
 
 	var city = 10001;
@@ -162,19 +162,40 @@ function quandl(){
 	};
 
 	var fullQueryZipcode = houseQueryUrl + areaType.zipcode + userInput + housingType.allHomes + format + houseKey;
-	var fullQueryCity = houseQueryUrl + areaType.city + userInput + housingType.medianRent + format + houseKey;
+	var fullQueryCity = houseQueryUrl + areaType.city + cityCode + housingType.medianRent + format + houseKey;
 
-	$.ajax({
-		url: fullQueryZipcode,
-		method: "GET",	
-	})
-	.done(function(response){
-		var results = response.dataset.data;
-		console.log(results);
-		addHomeInfo(results);
-	});
+	// $.ajax({
+	// 	url: fullQueryCity,
+	// 	method: "GET",	
+	// })
+	// .done(function(response){
+	// 	var results = response.dataset.data;
+	// 	console.log(results);
+	// 	addHomeInfo(results);
+	// });
 };
 
+
+function checkInput(userInput){
+  	var alphaExp = /^[a-zA-Z ]+$/;
+	var numericExpression = /^[0-9]+$/;
+	if(userInput.match(alphaExp)){
+		getCityCode(userInput);
+	} else if(userInput.match(numericExpression)){
+
+	};
+};
+
+function getCityCode (userInput) {
+	database.ref().child("-KWklNSHU4YBCKzFREu7").once('value').then(function(snapShot){ 
+		var inputCityCode = snapShot.val().find(function(cityCode){
+			if(cityCode.City === userInput){
+				return cityCode;
+			}
+		});
+		console.log(inputCityCode.Code);
+	});
+};
 
 // Home info function
 
@@ -209,9 +230,6 @@ function googleMap () {
 
 	newMap.attr("src", fullMapUrl);
 	$(".googleMapDiv").append(newMap);
-
-	console.log(userInput);
-	console.log(fullMapUrl);
 };
 
 function printPastSearches(){
@@ -222,15 +240,6 @@ function printPastSearches(){
 		button.text(pastSearches[i]);
 		$("#pastSearchesList").append(button);
 	}
-};
-
-function logDisplay(){
-	$("#overlay").hide();
-	$(".card-wide").hide();
-	$("#email").val("");
-	$("#name").val("");
-	$("#password").val("");
-	$("#signOutButton").show();
 };
 
 
@@ -246,6 +255,9 @@ function logDisplay(){
 //     });
 //     console.log(uluru);
 // };
+
+
+// Weather API
 
 function weatherInfo () {
 	var weatherKey = "&APPID=d08b9cd3e13cf6b5a305591b965112f6"
@@ -291,8 +303,13 @@ $("#citySearch").on("submit", function() {
 	googleMap();
 	weatherInfo();
 	printPastSearches();
+	cityCode = checkInput(userInput);
+	return false;
 	// initMap();
 });
+
+
+// button functionalities
 
 $("#loginButton").on("click", function(){
 	loginFunction();
@@ -327,5 +344,14 @@ $("#signInButton").on("click", function(){
 	$("#signInButton").hide();
 	$("#nameDisplay").html("");
 });
+
+function logDisplay(){
+	$("#overlay").hide();
+	$(".card-wide").hide();
+	$("#email").val("");
+	$("#name").val("");
+	$("#password").val("");
+	$("#signOutButton").show();
+};
 
 })(this);
