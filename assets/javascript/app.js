@@ -10,17 +10,18 @@ var cityCode;
 var city;
 var state;
 var zipcode;
+var graphData = [];
 
 
 
 // Login logic
 
 var config = {
-    apiKey: "AIzaSyBYWTeOhT42zgZZnA21IcyAQ10pNAtQaWs",
-    authDomain: "angulardev-699fa.firebaseapp.com",
-    databaseURL: "https://angulardev-699fa.firebaseio.com",
-    storageBucket: "angulardev-699fa.appspot.com",
-    messagingSenderId: "527207620597"
+	apiKey: "AIzaSyB04EBE4lAomxsuidTOhzbx7ea128dh9Vg",
+	authDomain: "moveto-6bafd.firebaseapp.com",
+	databaseURL: "https://moveto-6bafd.firebaseio.com",
+	storageBucket: "moveto-6bafd.appspot.com",
+	messagingSenderId: "449877402191"
 };
 
 firebase.initializeApp(config);
@@ -29,7 +30,7 @@ var database = firebase.database();
 var name = "";
 var email = "";
 var password = "";
-var id = "";
+var id;
 var pastSearches = [];
 
 function loginFunction(){
@@ -94,6 +95,7 @@ function autoComplete(input){
 	});
 };
 
+
 function zipcodeFinder (){
 	var zipcodeKey = "l24t8gV4cPlE14PoXJK9IfKnrGjaY8PkbTNk9IpmyK0zPPXMzIWhYGFqnZBm8qGj";
 	var zipcodeQueryUrl = "https://crossorigin.me/https://www.zipcodeapi.com/rest/";
@@ -102,14 +104,15 @@ function zipcodeFinder (){
 	
 	var zipcodeFullQueryUrl = zipcodeQueryUrl +zipcodeKey + zipcodeCity + zipcodeState;
 
-	// $.ajax({
-	// 	url: zipcodeFullQueryUrl,
-	// 	method: "GET"
-	// }).done(function(response){
-	// 	var randomNumber = Math.floor(Math.random() * response.zip_codes.length) + 1;
-	// 	zipcode = response.zip_codes[randomNumber];
-	// });
+	$.ajax({
+		url: zipcodeFullQueryUrl,
+		method: "GET"
+	}).done(function(response){
+		var randomNumber = Math.floor(Math.random() * response.zip_codes.length) + 1;
+		zipcode = response.zip_codes[randomNumber];
+	});
 };
+
 
 function jambase(){
 
@@ -121,15 +124,16 @@ function jambase(){
 
 	var jambaseFullQueryUrl = jambaseQueryUrl + jambaseZipcode + jambasePages + jambaseKey;
 
-	// $.ajax({
-	// 	url: jambaseFullQueryUrl,
-	// 	method: "GET"
-	// })
-	// .done(function(response){
-	// 	var results = response.Events;
-	// 	addMusicEvents(results);
-	// });
+	$.ajax({
+		url: jambaseFullQueryUrl,
+		method: "GET"
+	})
+	.done(function(response){
+		var results = response.Events;
+		addMusicEvents(results);
+	});
 };
+
 
 // music event function
 
@@ -184,58 +188,58 @@ function quandl(){
 		medianListPrice: "_MLP",
 	};
 
-	// var fullQueryZipcode = houseQueryUrl + areaType.zipcode + zipcode + housingType.allHomes + format + houseKey;
-	var fullQueryCity = houseQueryUrl + areaType.city + cityCode + housingType.medianRent + format + houseKey;
+	var fullQueryZipcode = houseQueryUrl + areaType.zipcode + zipcode + housingType.medianRent + format + houseKey;
+	// var fullQueryCity = houseQueryUrl + areaType.city + cityCode + housingType.medianRent + format + houseKey;
 
-	// $.ajax({
-	// 	url: fullQueryCity,
-	// 	method: "GET",	
-	// })
-	// .done(function(response){
-	// 	var results = response.dataset.data;
-	// 	addHomeInfo(results);
-	// });
-};
-
-
-function checkInput(userInput){
-  	var alphaExp = /^[a-zA-Z ]+$/;
-	var numericExpression = /^[0-9]+$/;
-	if(userInput.match(alphaExp)){
-		getCityCode(userInput);
-	} else if(userInput.match(numericExpression)){
-
-	};
-};
-
-function getCityCode (userInput) {
-	database.ref().child("-KWklNSHU4YBCKzFREu7").once('value').then(function(snapShot){ 
-		var inputCityCode = snapShot.val().find(function(cityCode){
-			if(cityCode.City === userInput){
-				return cityCode;
-			}
-		});
-		cityCode = inputCityCode.Code;
+	$.ajax({
+		url: fullQueryZipcode,
+		method: "GET",	
+	})
+	.done(function(response){
+		var results = response.dataset.data;
+		addHomeInfo(results);
 	});
 };
+
+
+// function checkInput(userInput){
+//   	var alphaExp = /^[a-zA-Z ]+$/;
+// 	var numericExpression = /^[0-9]+$/;
+// 	if(userInput.match(alphaExp)){
+// 		getCityCode(userInput);
+// 	} else if(userInput.match(numericExpression)){
+
+// 	};
+// };
+
+// function getCityCode (userInput) {
+// 	database.ref().child("-KWklNSHU4YBCKzFREu7").once('value').then(function(snapShot){ 
+// 		var inputCityCode = snapShot.val().find(function(cityCode){
+// 			if(cityCode.City === userInput){
+// 				return cityCode;
+// 			}
+// 		});
+// 		cityCode = inputCityCode.Code;
+// 	});
+// };
+
 
 // Home info function
 
 function addHomeInfo(results) {
 	$("#statsBody").empty();
 	for (var i = 0; i < results.length; i++) {
-		var newTr = $("<tr>");
-		var newDateTd = $("<td>").addClass("mdl-data-table__cell--non-numeric");
-		var newPriceTd = $("<td>");
-		var price = "$" + results[i][1];
+		var price = results[i][1];
 		var date = moment(results[i][0]).format("MMM YYYY");
-
-		newDateTd.text(date);
-		newPriceTd.text(price);
-
-		newTr.append(newDateTd, newPriceTd);
-		$("#statsBody").append(newTr);
+		var dataPoint = [date, price];
+		graphData.push(dataPoint);
 	};
+
+	graphData = graphData.reverse();
+
+	google.charts.load('current', {packages: ['corechart']});
+	google.charts.setOnLoadCallback(drawChart);
+
 };
 
 
@@ -269,20 +273,6 @@ function printPastSearches(){
 		$("#pastSearchesList").prepend(button);
 	}
 };
-
-
-// function initMap() {
-//     var uluru = "los+Angeles"
-//     var map = new google.maps.map(document.getElementById('googleMapDiv'), {
-//       zoom: 2,
-//       center: userInput
-//     });
-//     var marker = new google.maps.Marker({
-//       position: uluru,
-//       map: map
-//     });
-//     console.log(uluru);
-// };
 
 
 // Weather API
@@ -334,14 +324,13 @@ $("#citySearch").on("submit", function() {
 	autoComplete(userInput);
 	$("#location").val("");
 	setTimeout(zipcodeFinder, 1000);
-	checkInput(userInput);
+	// checkInput(userInput);
 	setTimeout(jambase, 2000);
 	setTimeout(quandl, 2000);
 	googleMap();
 	weatherInfo();
 	printPastSearches();
 	return false;
-	// initMap();
 });
 
 $(document).on("click", ".past-search", function(){
@@ -353,7 +342,7 @@ $(document).on("click", ".past-search", function(){
 	};
 	autoComplete(userInput);
 	setTimeout(zipcodeFinder, 1000);
-	checkInput(userInput);
+	// checkInput(userInput);
 	setTimeout(jambase, 2000);
 	setTimeout(quandl, 2000);
 	googleMap();
@@ -407,5 +396,16 @@ function logDisplay(){
 	$("#password").val("");
 	$("#signOutButton").show();
 };
+
+function drawChart() {
+	var data = new google.visualization.DataTable();
+	data.addColumn("string", "Date");
+	data.addColumn("number", "Rent");
+	data.addRows(graphData);
+
+	var chart = new google.visualization.LineChart(document.getElementById("rentGraph"));
+	chart.draw(data, null);
+};
+
 
 })(this);
