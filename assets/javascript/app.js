@@ -40,10 +40,10 @@ function loginFunction(){
     firebase.auth().signInWithEmailAndPassword(email, password).then(function(firebaseUser) {  
   	    if (firebaseUser) {
      	 	id =  firebaseUser.uid;	
+			pastSearches = [];
      	 	console.log(id);
   	    	database.ref(id).once('value').then(function(snapShot){ 
-				pastSearchesFromDatabase = snapShot.child("pastSearches").val();
-				pastSearches.push(pastSearchesFromDatabase);
+				pastSearches = snapShot.child("pastSearches").val();
 				name = snapShot.child("username").val();
 				$("#nameDisplay").html("Welcome " + name);
 				printPastSearches();
@@ -60,9 +60,8 @@ function register(){
     	
     firebase.auth().createUserWithEmailAndPassword(email, password).then(function(firebaseUser) {	
 		if (firebaseUser) {
-			var id =  firebaseUser.uid;
-				database.ref(id).set({userID: id, username: name})
-
+			id =  firebaseUser.uid;
+			database.ref(id).set({userID: id, username: name})
 		} else {
 			console.log("No user!")
 		}   
