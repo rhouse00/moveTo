@@ -11,6 +11,11 @@ var city;
 var state;
 var zipcode;
 var graphData = [];
+var name = "";
+var email = "";
+var password = "";
+var id;
+var pastSearches = [];
 
 
 
@@ -27,11 +32,6 @@ var config = {
 firebase.initializeApp(config);
 var database = firebase.database();
 
-var name = "";
-var email = "";
-var password = "";
-var id;
-var pastSearches = [];
 
 function loginFunction(){
     email = $("#email").val();
@@ -40,8 +40,10 @@ function loginFunction(){
     firebase.auth().signInWithEmailAndPassword(email, password).then(function(firebaseUser) {  
   	    if (firebaseUser) {
      	 	id =  firebaseUser.uid;	
+     	 	console.log(id);
   	    	database.ref(id).once('value').then(function(snapShot){ 
-				pastSearches = snapShot.child("pastSearches").val();
+				pastSearchesFromDatabase = snapShot.child("pastSearches").val();
+				pastSearches.push(pastSearchesFromDatabase);
 				name = snapShot.child("username").val();
 				$("#nameDisplay").html("Welcome " + name);
 				printPastSearches();
@@ -60,6 +62,7 @@ function register(){
 		if (firebaseUser) {
 			var id =  firebaseUser.uid;
 				database.ref(id).set({userID: id, username: name})
+
 		} else {
 			console.log("No user!")
 		}   
@@ -67,9 +70,10 @@ function register(){
 }
 
 function logOut(){
+	console.log(id);
 	database.ref(id).child("pastSearches").set(pastSearches);
 	firebase.auth().signOut()
-	pastSearches = [];
+	
 }
 
 
@@ -89,6 +93,7 @@ function autoComplete(input){
 		city = placesResponse.predictions[0].terms[0].value;
 		state = placesResponse.predictions[0].terms[1].value;
 		parsedInput = city + ", " + state;
+		console.log(parsedInput);
 		$("#city").text(parsedInput);
 		pastSearches.push(parsedInput);
 		printPastSearches();
@@ -380,6 +385,7 @@ $("#signOutButton").on("click", function(){
 });
 
 $("#signInButton").on("click", function(){
+	loginFunction();
 	$("#overlay").show();
 	$(".card-wide").show();
 	$("#signOutButton").hide();
