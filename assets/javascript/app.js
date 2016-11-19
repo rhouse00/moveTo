@@ -437,6 +437,7 @@ $("#signOutButton").on("click", function(){
 	$("#signOutButton").hide();
 	$("#nameDisplay").html("");
 	$(".card-wide").css("margin-top", "-150px");
+	$("#pastSearchesList").empty();
 	logOut();
 });
 
