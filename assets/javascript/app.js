@@ -118,8 +118,8 @@ function pushToPastSearchesArray(parsedInput){
 	pastSearches.push(parsedInput);
 };
 
-// zipcodeFinder takes city and state of search, returns list of all zipcodes within city, 
-// then uses a RNG to pick a random zipcode.
+// zipcodeFinder takes city and state of search, returns list of all zipcodes within city // 
+
 
 function zipcodeFinder (){
 	var zipcodeKey = "l24t8gV4cPlE14PoXJK9IfKnrGjaY8PkbTNk9IpmyK0zPPXMzIWhYGFqnZBm8qGj";
@@ -133,8 +133,8 @@ function zipcodeFinder (){
 		url: zipcodeFullQueryUrl,
 		method: "GET"
 	}).done(function(response){
-		var randomNumber = Math.floor(Math.random() * response.zip_codes.length) + 1;
-		zipcode = response.zip_codes[randomNumber];
+		
+		zipcode = response.zip_codes[0];
 	});
 };
 
@@ -269,11 +269,11 @@ function addWeather (response) {
 
 function quandl(){
 	var houseQueryUrl = "https://crossorigin.me/https://www.quandl.com/api/v3/datasets/ZILL/";
-	var houseKey = "api_key=9pkQJjLhWGj_iy2MzNtb";
+	var houseKey = "api_key=xrc6s3i5hYNG-hwzWrtx";
 	var numResults = 10;
 	var addLimit = "limit=" + numResults;
 
-	// var city = 10001;
+	var city = 10001;
 	var format = ".json?"
 
 	var areaType = {
@@ -357,9 +357,9 @@ $("#citySearch").on("submit", function() {
 	userInput = $("#location").val().trim();
 	autoComplete(userInput);
 	$("#location").val("");
-	setTimeout(zipcodeFinder, 2000);
-	// setTimeout(jambase, 2000);
-	// setTimeout(quandl, 2000);
+	setTimeout(zipcodeFinder, 1000);
+	setTimeout(jambase, 2000);
+	setTimeout(quandl, 2000);
 	googleMap();
 	weatherInfo();
 	printPastSearches();
@@ -380,9 +380,9 @@ $(document).on("click", ".past-search", function(){
 		};
 	};
 	autoComplete(userInput);
-	setTimeout(zipcodeFinder, 2000);
-	// setTimeout(jambase, 2000);
-	// setTimeout(quandl, 2000);
+	setTimeout(zipcodeFinder, 1000);
+	setTimeout(jambase, 2000);
+	setTimeout(quandl, 2000);
 	googleMap();
 	weatherInfo();
 	return false;
