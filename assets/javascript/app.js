@@ -372,6 +372,8 @@ $("#citySearch").on("submit", function() {
 
 $(document).on("click", ".past-search", function(){
 	userInput = $(this).data("term");
+	$('.displayPannel').show();
+	$('#map').show();
 	for (var i = 0; i < pastSearches.length; i++) {
 		if (userInput === pastSearches[i]){
 			pastSearches.splice(i, 1);
