@@ -41,8 +41,9 @@ function register(){
 		if (firebaseUser) {
 			id =  firebaseUser.uid;
 			database.ref(id).set({userID: id, username: name})
+			database.ref(id).child("pastSearches").set(pastSearches);
 		} else {
-			console.log("No user!")
+			// console.log("No user!")
 		}   
 	});
 }
@@ -59,9 +60,11 @@ function loginFunction(){
   	    if (firebaseUser) {
      	 	id =  firebaseUser.uid;	
 			pastSearches = [];
-     	 	console.log(id);
+			
   	    	database.ref(id).once('value').then(function(snapShot){ 
-				pastSearches = snapShot.child("pastSearches").val();
+				if(snapShot.child("pastSearches").val() !== null){ // checks to make sure there is a value in the database node to prevent error //
+					pastSearches = snapShot.child("pastSearches").val();
+				}
 				name = snapShot.child("username").val();
 				$("#nameDisplay").html("Welcome " + name);
 				printPastSearches();
@@ -75,7 +78,7 @@ function loginFunction(){
 // specific tree in firebase.
 
 function logOut(){
-	console.log(id);
+	// console.log(id);
 	database.ref(id).child("pastSearches").set(pastSearches);
 	firebase.auth().signOut()
 	
@@ -121,13 +124,13 @@ function zipcodeFinder (){
 	
 	var zipcodeFullQueryUrl = zipcodeQueryUrl +zipcodeKey + zipcodeCity + zipcodeState;
 
-	// $.ajax({
-	// 	url: zipcodeFullQueryUrl,
-	// 	method: "GET"
-	// }).done(function(response){
-	// 	var randomNumber = Math.floor(Math.random() * response.zip_codes.length) + 1;
-	// 	zipcode = response.zip_codes[randomNumber];
-	// });
+	$.ajax({
+		url: zipcodeFullQueryUrl,
+		method: "GET"
+	}).done(function(response){
+		var randomNumber = Math.floor(Math.random() * response.zip_codes.length) + 1;
+		zipcode = response.zip_codes[randomNumber];
+	});
 };
 
 
@@ -161,7 +164,7 @@ function googleMap () {
 
 function jambase(){
 
-	var jambaseKey = "&api_key=9jb9b7n5gjuehm3kah3zqe4b&o=json";
+	var jambaseKey = "&api_key=pqzvessme5nr32v3wy5qzsfk&o=json";
 	var jambaseQueryUrl = "https://crossorigin.me/http://api.jambase.com/events?";
 	var jambaseZipcode = "zipcode=" + zipcode;
 	var numberPages = 0;
@@ -169,14 +172,14 @@ function jambase(){
 
 	var jambaseFullQueryUrl = jambaseQueryUrl + jambaseZipcode + jambasePages + jambaseKey;
 
-	// $.ajax({
-	// 	url: jambaseFullQueryUrl,
-	// 	method: "GET"
-	// })
-	// .done(function(response){
-	// 	var results = response.Events;
-	// 	addMusicEvents(results);
-	// });
+	$.ajax({
+		url: jambaseFullQueryUrl,
+		method: "GET"
+	})
+	.done(function(response){
+		var results = response.Events;
+		addMusicEvents(results);
+	});
 };
 
 
@@ -261,11 +264,11 @@ function addWeather (response) {
 
 function quandl(){
 	var houseQueryUrl = "https://crossorigin.me/https://www.quandl.com/api/v3/datasets/ZILL/";
-	var houseKey = "api_key=y2xh6kV4KLrYCNGRJmSj"
+	var houseKey = "api_key=9pkQJjLhWGj_iy2MzNtb";
 	var numResults = 10;
 	var addLimit = "limit=" + numResults;
 
-	var city = 10001;
+	// var city = 10001;
 	var format = ".json?"
 
 	var areaType = {
@@ -282,14 +285,14 @@ function quandl(){
 
 	var fullQueryZipcode = houseQueryUrl + areaType.zipcode + zipcode + housingType.medianRent + format + houseKey;
 	
-	// $.ajax({
-	// 	url: fullQueryZipcode,
-	// 	method: "GET",	
-	// })
-	// .done(function(response){
-	// 	var results = response.dataset.data;
-	// 	addHomeInfo(results);
-	// });
+	$.ajax({
+		url: fullQueryZipcode,
+		method: "GET",	
+	})
+	.done(function(response){
+		var results = response.dataset.data;
+		addHomeInfo(results);
+	});
 };
 
 
@@ -349,9 +352,9 @@ $("#citySearch").on("submit", function() {
 	userInput = $("#location").val().trim();
 	autoComplete(userInput);
 	$("#location").val("");
-	setTimeout(zipcodeFinder, 1000);
-	setTimeout(jambase, 1100);
-	setTimeout(quandl, 1100);
+	setTimeout(zipcodeFinder, 2000);
+	// setTimeout(jambase, 2000);
+	// setTimeout(quandl, 2000);
 	googleMap();
 	weatherInfo();
 	printPastSearches();
@@ -370,9 +373,9 @@ $(document).on("click", ".past-search", function(){
 		};
 	};
 	autoComplete(userInput);
-	setTimeout(zipcodeFinder, 1000);
-	setTimeout(jambase, 1100);
-	setTimeout(quandl, 1100);
+	setTimeout(zipcodeFinder, 2000);
+	// setTimeout(jambase, 2000);
+	// setTimeout(quandl, 2000);
 	googleMap();
 	weatherInfo();
 	return false;
