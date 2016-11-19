@@ -107,11 +107,16 @@ function autoComplete(input){
 		parsedInput = city + ", " + state;
 		console.log(parsedInput);
 		$("#city").text(parsedInput);
-		pastSearches.push(parsedInput);
+		pushToPastSearchesArray(parsedInput);
 		printPastSearches();
 	});
 };
 
+// checks to see if pasedInput is already present in the pastSearches array//
+function pushToPastSearchesArray(parsedInput){
+	if (pastSearches.indexOf(parsedInput) > -1) return;
+	pastSearches.push(parsedInput);
+};
 
 // zipcodeFinder takes city and state of search, returns list of all zipcodes within city, 
 // then uses a RNG to pick a random zipcode.
