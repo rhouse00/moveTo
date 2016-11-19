@@ -428,6 +428,9 @@ $("#guestButton").on("click", function(){
 // and bringing up login modal.
 
 $("#signOutButton").on("click", function(){
+	$('.displayPannel').hide();
+	$('#map').hide();
+	$("#city").empty();
 	$("#overlay").show();
 	$(".card-wide").show();
 	$("#signInButton").hide();
