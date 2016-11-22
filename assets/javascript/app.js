@@ -12,7 +12,12 @@ var id;   // UID of user in firebase.
 var pastSearches = [];   // Array of past cities searched.
 var graphData = [];   // Array of arrays of average rent vs time.
 
-
+var placesKey;
+var zipcodeKey;
+var googleKey;
+var jambaseKey;
+var weatherKey;
+var houseKey;
 // Firebase initilization
 
 var config = {
@@ -39,9 +44,11 @@ function register(){
     	
     firebase.auth().createUserWithEmailAndPassword(email, password).then(function(firebaseUser) {	
 		if (firebaseUser) {
+			loadAppKeys();
 			id =  firebaseUser.uid;
 			database.ref(id).set({userID: id, username: name})
 			database.ref(id).child("pastSearches").set(pastSearches);
+			
 		} else {
 			// console.log("No user!")
 		}   
@@ -58,6 +65,7 @@ function loginFunction(){
 
     firebase.auth().signInWithEmailAndPassword(email, password).then(function(firebaseUser) {  
   	    if (firebaseUser) {
+  	    	loadAppKeys();
      	 	id =  firebaseUser.uid;	
 			pastSearches = [];
 			
@@ -72,8 +80,17 @@ function loginFunction(){
       	}
    	});
 };
-
-
+// retrieves api keys from firebase 
+function loadAppKeys(){
+	database.ref(0).child("keys").once('value').then(function(snapShot){
+		placesKey = snapShot.child("placesKey").val();
+		zipcodeKey = snapShot.child("zipcodeKey").val();
+		googleKey = snapShot.child("googleKey").val();
+		jambaseKey = snapShot.child("jambaseKey").val();
+		weatherKey = snapShot.child("weatherKey").val();
+		houseKey = snapShot.child("houseKey").val();
+	})
+}
 // logOut function takes all searches made during session and stores them in the user 
 // specific tree in firebase.
 
@@ -91,7 +108,8 @@ function logOut(){
 //  in correct format for our further searches.
 
 function autoComplete(input){
-	var placesKey = "&key=AIzaSyCosNzeaDeb3bNZKdVQMu8AJxzQxaL6jDo";
+	console.log("Im here!");
+
 	var placesUrl = "https://crossorigin.me/https://maps.googleapis.com/maps/api/place/autocomplete/json?";
 	var placesInput = "input=" + input;
 	var placesType = "&types=geocode";
@@ -102,6 +120,7 @@ function autoComplete(input){
 		url: placesQueryUrl,
 		method:"GET"
 	}).done(function(placesResponse){
+		console.log("Im here now!");
 		city = placesResponse.predictions[0].terms[0].value;
 		state = placesResponse.predictions[0].terms[1].value;
 		parsedInput = city + ", " + state;
@@ -114,15 +133,17 @@ function autoComplete(input){
 
 // checks to see if pasedInput is already present in the pastSearches array//
 function pushToPastSearchesArray(parsedInput){
+	console.log("push function");
 	if (pastSearches.indexOf(parsedInput) > -1) return;
 	pastSearches.push(parsedInput);
+	console.log(pastSearches);
 };
 
 // zipcodeFinder takes city and state of search, returns list of all zipcodes within city // 
 
 
 function zipcodeFinder (){
-	var zipcodeKey = "l24t8gV4cPlE14PoXJK9IfKnrGjaY8PkbTNk9IpmyK0zPPXMzIWhYGFqnZBm8qGj";
+	
 	var zipcodeQueryUrl = "https://crossorigin.me/https://www.zipcodeapi.com/rest/";
 	var zipcodeCity = "/city-zips.json/" + city;
 	var zipcodeState = "/"+ state + ".";
@@ -149,7 +170,7 @@ function googleMap () {
 	var mapUrl = "https://maps.googleapis.com/maps/api/staticmap?center=";
 	var zoom = "&zoom=14";
 	var size = "&size=425x275&scale=1"
-	var googleKey = "&key=AIzaSyAau6LZg7LxUiZ0KjzV_srJ3Ko37t7C1f4";
+
 	var fullMapUrl = mapUrl + userInput + zoom + size + googleKey;
 	var mapLink = $("<a>");
 	var newMap = $("<img>");
@@ -169,7 +190,7 @@ function googleMap () {
 
 function jambase(){
 
-	var jambaseKey = "&api_key=pqzvessme5nr32v3wy5qzsfk&o=json";
+	
 	var jambaseQueryUrl = "https://crossorigin.me/http://api.jambase.com/events?";
 	var jambaseZipcode = "zipcode=" + zipcode;
 	var numberPages = 0;
@@ -223,8 +244,8 @@ function addMusicEvents(results) {
 // weatherInfo function takes userinput, queries openWeatherAPI, and returns 16 day weather info.
 
 function weatherInfo () {
-	var weatherKey = "&APPID=d08b9cd3e13cf6b5a305591b965112f6"
-	var numResults = "&cnt=" + 16
+	
+	var numResults = "&cnt=" + 16;
 	var weatherQueryUrl = "http://api.openweathermap.org/data/2.5/forecast/daily?q=" + userInput + numResults + weatherKey;
 	$.ajax({
 		url: weatherQueryUrl,
@@ -269,7 +290,7 @@ function addWeather (response) {
 
 function quandl(){
 	var houseQueryUrl = "https://crossorigin.me/https://www.quandl.com/api/v3/datasets/ZILL/";
-	var houseKey = "api_key=xrc6s3i5hYNG-hwzWrtx";
+	
 	var numResults = 10;
 	var addLimit = "limit=" + numResults;
 
