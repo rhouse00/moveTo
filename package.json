@@ -1,0 +1,23 @@
+{
+  "name": "move-to",
+  "version": "1.0.0",
+  "description": "Web app to search a city you are interested in moving to and receive data regarding that city",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mwhitcom/project-one.git"
+  },
+  "author": "Matt Whitcomb, Andrey Orlov, Ryan House",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mwhitcom/project-one/issues"
+  },
+  "homepage": "https://github.com/mwhitcom/project-one#readme",
+  "dependencies": {
+    "body-parser": "^1.17.0",
+    "express": "^4.15.0"
+  }
+}
