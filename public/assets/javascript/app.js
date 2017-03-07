@@ -12,24 +12,24 @@ var id;   // UID of user in firebase.
 var pastSearches = [];   // Array of past cities searched.
 var graphData = [];   // Array of arrays of average rent vs time.
 
-var placesKey;
-var zipcodeKey;
-var googleKey;
-var jambaseKey;
-var weatherKey;
-var houseKey;
+var placesKey = "&key=AIzaSyCosNzeaDeb3bNZKdVQMu8AJxzQxaL6jDo";
+var zipcodeKey = "l24t8gV4cPlE14PoXJK9IfKnrGjaY8PkbTNk9IpmyK0zPPXMzIWhYGFqnZBm8qGj";
+var googleKey = "&key=AIzaSyAau6LZg7LxUiZ0KjzV_srJ3Ko37t7C1f4";
+var jambaseKey = "&api_key=pqzvessme5nr32v3wy5qzsfk&o=json";
+var weatherKey = "&APPID=f66bce88fb7fff146e41f75c464a5549";
+var houseKey = "api_key=xrc6s3i5hYNG-hwzWrtx";
+
 // Firebase initilization
+// var config = {
+// 	apiKey: "AIzaSyB04EBE4lAomxsuidTOhzbx7ea128dh9Vg",
+// 	authDomain: "moveto-6bafd.firebaseapp.com",
+// 	databaseURL: "https://moveto-6bafd.firebaseio.com",
+// 	storageBucket: "moveto-6bafd.appspot.com",
+// 	messagingSenderId: "449877402191"
+// };
 
-var config = {
-	apiKey: "AIzaSyB04EBE4lAomxsuidTOhzbx7ea128dh9Vg",
-	authDomain: "moveto-6bafd.firebaseapp.com",
-	databaseURL: "https://moveto-6bafd.firebaseio.com",
-	storageBucket: "moveto-6bafd.appspot.com",
-	messagingSenderId: "449877402191"
-};
-
-firebase.initializeApp(config);
-var database = firebase.database();
+// firebase.initializeApp(config);
+// var database = firebase.database();
 
 
 // ------------------------------ Firebase Login, Register, Logout Functions -------------------------- /
@@ -81,16 +81,16 @@ function loginFunction(){
    	});
 };
 // retrieves api keys from firebase 
-function loadAppKeys(){
-	database.ref(0).child("keys").once('value').then(function(snapShot){
-		placesKey = snapShot.child("placesKey").val();
-		zipcodeKey = snapShot.child("zipcodeKey").val();
-		googleKey = snapShot.child("googleKey").val();
-		jambaseKey = snapShot.child("jambaseKey").val();
-		weatherKey = snapShot.child("weatherKey").val();
-		houseKey = snapShot.child("houseKey").val();
-	})
-}
+// function loadAppKeys(){
+// 	database.ref(0).child("keys").once('value').then(function(snapShot){
+// 		placesKey = snapShot.child("placesKey").val();
+// 		zipcodeKey = snapShot.child("zipcodeKey").val();
+// 		googleKey = snapShot.child("googleKey").val();
+// 		jambaseKey = snapShot.child("jambaseKey").val();
+// 		weatherKey = snapShot.child("weatherKey").val();
+// 		houseKey = snapShot.child("houseKey").val();
+// 	})
+// }
 // logOut function takes all searches made during session and stores them in the user 
 // specific tree in firebase.
 
@@ -107,36 +107,43 @@ function logOut(){
 // autoComplete function takes user input, calls google places API, and returns City, State
 //  in correct format for our further searches.
 
-function autoComplete(input){
-	console.log("Im here!");
+// function autoComplete(input){
 
-	var placesUrl = "https://maps.googleapis.com/maps/api/place/autocomplete/json?";
-	var placesInput = "input=" + input;
-	var placesType = "&types=geocode";
+// 	var placesUrl = "https://maps.googleapis.com/maps/api/place/autocomplete/json?";
+// 	var placesInput = "input=" + input;
+// 	var placesType = "&types=geocode";
+// 	var placesQueryUrl = placesUrl + placesInput + placesType + placesKey;
 
-	var placesQueryUrl = placesUrl + placesInput + placesType + placesKey;
+// 	$.ajax({
+// 		url: placesQueryUrl,
+// 		method:"GET"
+// 	}).done(function(placesResponse){
+// 		console.log("Im here now!");
+// 		city = placesResponse.predictions[0].terms[0].value;
+// 		state = placesResponse.predictions[0].terms[1].value;
+// 		parsedInput = city + ", " + state;
+// 		console.log(parsedInput);
+// 		$("#city").text(parsedInput);
+// 		pushToPastSearchesArray(parsedInput);
+// 		printPastSearches();
+// 	});
+// };
 
-	$.ajax({
-		url: placesQueryUrl,
-		method:"GET"
-	}).done(function(placesResponse){
-		console.log("Im here now!");
-		city = placesResponse.predictions[0].terms[0].value;
-		state = placesResponse.predictions[0].terms[1].value;
-		parsedInput = city + ", " + state;
-		console.log(parsedInput);
-		$("#city").text(parsedInput);
-		pushToPastSearchesArray(parsedInput);
-		printPastSearches();
-	});
-};
+function search(input){
+	var info = input.split(',');
+	city = info[0];
+	state = info[0];
+	$("#city").text(input);
+	pushToPastSearchesArray(input);
+	printPastSearches();
+}
 
 // checks to see if pasedInput is already present in the pastSearches array//
 function pushToPastSearchesArray(parsedInput){
-	console.log("push function");
+	// console.log("push function");
 	if (pastSearches.indexOf(parsedInput) > -1) return;
 	pastSearches.push(parsedInput);
-	console.log(pastSearches);
+	// console.log(pastSearches);
 };
 
 // zipcodeFinder takes city and state of search, returns list of all zipcodes within city // 
@@ -245,8 +252,9 @@ function addMusicEvents(results) {
 
 function weatherInfo () {
 	
-	var numResults = "&cnt=" + 16;
-	var weatherQueryUrl = "https://api.openweathermap.org/data/2.5/forecast/daily?q=" + userInput + numResults + weatherKey;
+	var numResults = "&cnt=7";
+	var outputType = "&mode=json";
+	var weatherQueryUrl = "http://api.openweathermap.org/data/2.5/forecast/daily?q=" + city + outputType + numResults + weatherKey;
 	$.ajax({
 		url: weatherQueryUrl,
 		method: "GET"
@@ -376,11 +384,13 @@ $("#citySearch").on("submit", function() {
 	$(".mdl-cell--6-col").show();
 	$("#search").css("margin-top", "0");
 	userInput = $("#location").val().trim();
-	autoComplete(userInput);
+	// autoComplete(userInput);
+	search(userInput);
 	$("#location").val("");
-	setTimeout(zipcodeFinder, 1000);
+	// setTimeout(zipcodeFinder, 1000);
+	zipcodeFinder();
 	setTimeout(jambase, 2000);
-	setTimeout(quandl, 2000);
+	setTimeout(quandl, 3000);
 	googleMap();
 	weatherInfo();
 	printPastSearches();
@@ -400,8 +410,10 @@ $(document).on("click", ".past-search", function(){
 			pastSearches.splice(i, 1);
 		};
 	};
-	autoComplete(userInput);
-	setTimeout(zipcodeFinder, 1000);
+	// autoComplete(userInput);
+	search(userInput);
+	zipcodeFinder();
+	// setTimeout(zipcodeFinder, 1000);
 	setTimeout(jambase, 2000);
 	setTimeout(quandl, 2000);
 	googleMap();

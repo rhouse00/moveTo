@@ -1,6 +1,6 @@
 // Server Dependencies
 const express = require('express'),
-    bodyParser = require('body-parser');
+      bodyParser = require('body-parser');
 
 // Express Instance
 const app = express();
