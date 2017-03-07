@@ -130,9 +130,9 @@ function logOut(){
 // };
 
 function search(input){
-	var info = input.split(',');
+	var info = input.split(', ');
 	city = info[0];
-	state = info[0];
+	state = info[1];
 	$("#city").text(input);
 	pushToPastSearchesArray(input);
 	printPastSearches();
@@ -151,7 +151,7 @@ function pushToPastSearchesArray(parsedInput){
 
 function zipcodeFinder (){
 	
-	var zipcodeQueryUrl = "https://www.zipcodeapi.com/rest/";
+	var zipcodeQueryUrl = "https://crossorigin.me/https://www.zipcodeapi.com/rest/";
 	var zipcodeCity = "/city-zips.json/" + city;
 	var zipcodeState = "/"+ state + ".";
 	
@@ -198,7 +198,7 @@ function googleMap () {
 function jambase(){
 
 	
-	var jambaseQueryUrl = "https://api.jambase.com/events?";
+	var jambaseQueryUrl = "http://api.jambase.com/events?";
 	var jambaseZipcode = "zipcode=" + zipcode;
 	var numberPages = 0;
 	var jambasePages = "&page=" + numberPages
@@ -389,7 +389,7 @@ $("#citySearch").on("submit", function() {
 	$("#location").val("");
 	// setTimeout(zipcodeFinder, 1000);
 	zipcodeFinder();
-	setTimeout(jambase, 2000);
+	setTimeout(jambase, 3000);
 	setTimeout(quandl, 3000);
 	googleMap();
 	weatherInfo();
@@ -414,8 +414,8 @@ $(document).on("click", ".past-search", function(){
 	search(userInput);
 	zipcodeFinder();
 	// setTimeout(zipcodeFinder, 1000);
-	setTimeout(jambase, 2000);
-	setTimeout(quandl, 2000);
+	setTimeout(jambase, 3000);
+	setTimeout(quandl, 3000);
 	googleMap();
 	weatherInfo();
 	return false;
