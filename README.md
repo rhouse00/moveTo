@@ -1,6 +1,6 @@
 # [MoveTo](http://moveto.herokuapp.com) - UCLA Coding Bootcamp Project 1
 
-MoveTo was created by Andrey Orlov, Matt Whitcomb, and Ryan House as their first project for the UCLA Coding Bootcamp.
+MoveTo was created by [Andrey Orlov](https://github.com/andreyorlov33), [Matt Whitcomb](https://github.com/mwhitcom), and [Ryan House](https://github.com/rhouse00) as their first project for the UCLA Coding Bootcamp.
 
 
 ## Objective 
