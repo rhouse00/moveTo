@@ -131,7 +131,9 @@ function logOut(){
 // };
 
 function search(input){
+	console.log(input);
 	var info = input.split(', ');
+	console.log(info);
 	city = info[0];
 	state = info[1];
 	$("#city").text(input);
@@ -154,8 +156,6 @@ function zipcodeFinder (){
 	
 	var zipcodeQueryUrl = "https://crossorigin.me/https://www.zipcodeapi.com/rest/";
 	var zipcodeCityState = `/city-zips.json/${city}/${state}`;
-	console.log(city);
-	console.log(state);
 	
 	var zipcodeFullQueryUrl = zipcodeQueryUrl + zipcodeKey + zipcodeCityState;
 	// var zipcodeFullQueryUrl = "https://crossorigin.me/https://www.zipcodeapi.com/rest//city-zips.json/portland/or"
