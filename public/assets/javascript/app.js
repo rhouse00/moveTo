@@ -162,7 +162,7 @@ function zipcodeFinder (){
 		url: zipcodeFullQueryUrl,
 		method: "GET"
 	}).done(function(response){
-		
+		console.log(response);
 		zipcode = response.zip_codes[0];
 	});
 };
@@ -221,8 +221,6 @@ function jambase(){
 
 function addMusicEvents(results) {
 	$("#musicBody").empty();
-	console.log(results);
-	console.log(zipcode);
 	for(var i = 0; i < 15; i++) {
 		var newTr = $("<tr>");
 		var newDateTd = $("<td>").addClass("mdl-data-table__cell--non-numeric");
