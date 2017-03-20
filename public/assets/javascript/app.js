@@ -156,8 +156,8 @@ function zipcodeFinder (){
 	var zipcodeCity = "/city-zips.json/" + city;
 	var zipcodeState = "/"+ state + ".";
 	
-	var zipcodeFullQueryUrl = zipcodeQueryUrl +zipcodeKey + zipcodeCity + zipcodeState;
-
+	// var zipcodeFullQueryUrl = zipcodeQueryUrl +zipcodeKey + zipcodeCity + zipcodeState;
+	var zipcodeFullQueryUrl = "https://crossorigin.me/https://www.zipcodeapi.com/rest/7C3XmcSRSlaYneADZyG74YhgAuE7X964M929lU0egbdEpNholXvqVNGwhlEfvKkh/city-zips.json/portland/or"
 	$.ajax({
 		url: zipcodeFullQueryUrl,
 		method: "GET"
