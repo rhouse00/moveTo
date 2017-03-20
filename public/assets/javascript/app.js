@@ -202,7 +202,7 @@ function jambase(){
 	var jambaseQueryUrl = "http://api.jambase.com/events?";
 	var jambaseZipcode = "zipcode=" + zipcode;
 	var numberPages = 0;
-	var jambasePages = "&page=" + numberPages
+	var jambasePages = "&page=" + numberPages;
 
 	var jambaseFullQueryUrl = jambaseQueryUrl + jambaseZipcode + jambasePages + jambaseKey;
 
@@ -222,6 +222,7 @@ function jambase(){
 function addMusicEvents(results) {
 	$("#musicBody").empty();
 	console.log(results);
+	console.log(zipcode);
 	for(var i = 0; i < 15; i++) {
 		var newTr = $("<tr>");
 		var newDateTd = $("<td>").addClass("mdl-data-table__cell--non-numeric");
