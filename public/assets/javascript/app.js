@@ -220,7 +220,7 @@ function jambase(){
 
 function addMusicEvents(results) {
 	$("#musicBody").empty();
-	console.log(results[0]);
+	console.log(results);
 	for(var i = 0; i < 15; i++) {
 		var newTr = $("<tr>");
 		var newDateTd = $("<td>").addClass("mdl-data-table__cell--non-numeric");
