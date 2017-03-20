@@ -151,7 +151,7 @@ function pushToPastSearchesArray(parsedInput){
 
 function zipcodeFinder (){
 	
-	var zipcodeQueryUrl = "https://crossorigin.me/https://www.zipcodeapi.com/rest/";
+	var zipcodeQueryUrl = "https://www.zipcodeapi.com/rest/";
 	var zipcodeCity = "/city-zips.json/" + city;
 	var zipcodeState = "/"+ state + ".";
 	
