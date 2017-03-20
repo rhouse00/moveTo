@@ -220,13 +220,14 @@ function jambase(){
 
 function addMusicEvents(results) {
 	$("#musicBody").empty();
+	console.log(results[0]);
 	for(var i = 0; i < 15; i++) {
 		var newTr = $("<tr>");
 		var newDateTd = $("<td>").addClass("mdl-data-table__cell--non-numeric");
 		var newNameTd = $("<td>");
 		var newVenueTd = $("<td>");
 		var newTixTd = $("<td>");
-		var date = moment(results[i].Date).format("MMM Do YY");
+		// var date = moment(results[i].Date).format("MMM Do YY");
 		var name = results[i].Artists[0].Name;
 		var venue = results[i].Venue.Name;
 		var tix = results[i].TicketUrl;
