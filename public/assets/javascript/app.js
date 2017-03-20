@@ -17,7 +17,7 @@ var zipcodeKey = "l24t8gV4cPlE14PoXJK9IfKnrGjaY8PkbTNk9IpmyK0zPPXMzIWhYGFqnZBm8q
 var googleKey = "&key=AIzaSyAau6LZg7LxUiZ0KjzV_srJ3Ko37t7C1f4";
 var jambaseKey = "&api_key=pqzvessme5nr32v3wy5qzsfk&o=json";
 var weatherKey = "&APPID=f66bce88fb7fff146e41f75c464a5549";
-var houseKey = "api_key=xrc6s3i5hYNG-hwzWrtx";
+var houseKey = "api_key=uGsJ4y6VNJNe6ce2ujzk";
 
 // Firebase initilization
 // var config = {
