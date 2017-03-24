@@ -39,6 +39,7 @@ The project requirements listed below were provided by the project markdown:
 * jQuery
 * Node.js
 * Express.js
+* Handlebars.js
 * Firebase
 * HTML5
 * CSS3
