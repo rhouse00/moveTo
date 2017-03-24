@@ -1,6 +1,7 @@
 // Server Dependencies
-const express = require('express'),
-      bodyParser = require('body-parser');
+const express = require('express');
+const exphbs = require("express-handlebars");
+const bodyParser = require('body-parser');
 
 // Express Instance
 const app = express();
@@ -23,15 +24,17 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.text());
 app.use(bodyParser.json({ type: "application/vnd.api+json" }));
 
-// Grab public folder
+// Grab public folder and Handlebars
+app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.set("view engine", "handlebars");
 app.use(express.static("./public"));
 
 
 // ------------------ Routes -------------------------------
 
 // Main route
-app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/public/index.html");
+app.get('/', (req, res) => {
+  res.render('index');
 });
 
 

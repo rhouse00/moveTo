@@ -1,0 +1,142 @@
+
+<!--Fixed header of page with left tab-->
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+<header class="mdl-layout__header">
+    <div class="mdl-layout__header-row">
+    <span class="mdl-layout-title" id="nameDisplay"></span>
+    <div class="mdl-layout-spacer"></div>
+    <nav class="mdl-navigation">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect" id="signOutButton">Sign Out</a>
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect" id="signInButton">Sign In</a>
+    </nav>
+    </div>
+</header>
+<div class="mdl-layout__drawer">
+    <span class="mdl-layout-title">Past Searches</span>
+    <nav class="mdl-navigation" id="pastSearchesList">
+    </nav>
+</div>
+<main class="mdl-layout__content">
+    <div class="page-content">
+        <div class="mdl-grid">
+
+            <!--search bar and logo-->
+            <div class="mdl-cell mdl-cell--12-col" id="search">
+                <h1 id="city"></h1>
+                <form action="#" id="citySearch" autocomplete="off">
+                    <div class="mdl-textfield mdl-js-textfield" id="searchBar">
+                        <input class="mdl-textfield__input" type="text" id="location">
+                        <label class="mdl-textfield__label" for="location" id="dummyText">City, State...</label>
+                    </div>
+                </form>
+            </div>
+
+            <!--login modal-->
+            <div class="card-wide mdl-card mdl-shadow--2dp">
+                <div class="mdl-card__title">
+                    <h2 class="mdl-card__title-text"></h2>
+                </div>
+                <div class="mdl-card__supporting-text" id="loginArea">
+                    <form action="#" autocomplete="off">
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <input class="mdl-textfield__input" type="text" id="name">
+                            <label class="mdl-textfield__label" for="name">Name</label>
+                        </div>
+                    </form>
+                    <form action="#" autocomplete="off">
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <input class="mdl-textfield__input" type="text" id="email">
+                            <label class="mdl-textfield__label" for="email">Email</label>
+                        </div>
+                    </form>
+                    <form action="#" autocomplete="off">
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <input class="mdl-textfield__input" type="password" id="password">
+                            <label class="mdl-textfield__label" for="password">Password</label>
+                        </div>
+                    </form>
+                </div>
+                <div class="mdl-card__actions mdl-card--border" id="loginButtonCont">
+                    <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" id="loginButton">
+                    Sign In
+                    </a>
+                    <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" id="registerButton">
+                    Register
+                    </a>
+                    <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" id="guestButton">
+                    Continue as Guest
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+    <!--Good Map Div-->
+        <div class="mdl-grid">
+            <div class="mdl-cell mdl-cell--6-col" id="map">
+                <div class="card-square mdl-card mdl-shadow--4dp">
+                    <h2>Map</h2>
+                    <div class="googleMapDiv"></div>
+                </div>
+            </div>
+
+    <!--Music Nearby Div-->
+            <div class="mdl-cell mdl-cell--6-col displayPannel" id="music">
+                <div class="card-square mdl-card mdl-shadow--4dp">
+                    <h2>Music Nearby</h2>
+                    <div class="supporting-text">
+                        <table class="mdl-data-table mdl-js-data-table">
+                        <thead>
+                            <tr>
+                            <th class="mdl-data-table__cell--non-numeric">Date</th>
+                            <th class="mdl-data-table__cell--non-numeric">Artist</th>
+                            <th class="mdl-data-table__cell--non-numeric">Tickets</th>
+                            <th class="mdl-data-table__cell--non-numeric">Venue</th>
+                            </tr>
+                        </thead>
+                        <tbody id="musicBody">
+                        </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    <!--Weather Div-->
+        <div class="mdl-grid">
+            <div class="mdl-cell mdl-cell--6-col displayPannel" id="weather">
+                <div class="card-square mdl-card mdl-shadow--4dp">
+                    <h2>Weather</h2>
+                    <div class="supporting-text">
+                        <table class="mdl-data-table mdl-js-data-table">
+                        <thead>
+                            <tr>
+                            <th class="mdl-data-table__cell--non-numeric">Date</th>
+                            <th class="mdl-data-table__cell--non-numeric">Weather</th>
+                            <th class="mdl-data-table__cell--non-numeric">High Temp (F)</th>
+                            <th class="mdl-data-table__cell--non-numeric">Low Temp (F)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="weatherBody">
+                        </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>  
+
+    <!--Average Rent Div--> 
+            <div class="mdl-cell mdl-cell--6-col displayPannel" id="city-stats">
+                <div class="card-square mdl-card mdl-shadow--4dp">
+                    <h2>Average Rent Info</h2>
+                    <div class="supporting-text">
+                        <div id="rentGraph"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="overlay"></div>
+    </div>
+</main>
+</div>
+
+<script type="text/javascript" src="/assets/javascript/app.js"></script>
