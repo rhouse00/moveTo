@@ -149,9 +149,9 @@ function pushToPastSearchesArray(parsedInput){
 	// console.log(pastSearches);
 };
 
+
+
 // zipcodeFinder takes city and state of search, returns list of all zipcodes within city // 
-
-
 function zipcodeFinder (){
 	
 	var zipcodeQueryUrl = "https://crossorigin.me/https://www.zipcodeapi.com/rest/";
