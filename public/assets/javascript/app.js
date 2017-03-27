@@ -96,7 +96,6 @@ function loginFunction(){
 // specific tree in firebase.
 
 function logOut(){
-	// console.log(id);
 	database.ref(id).child("pastSearches").set(pastSearches);
 	firebase.auth().signOut()
 	
@@ -119,11 +118,9 @@ function logOut(){
 // 		url: placesQueryUrl,
 // 		method:"GET"
 // 	}).done(function(placesResponse){
-// 		console.log("Im here now!");
 // 		city = placesResponse.predictions[0].terms[0].value;
 // 		state = placesResponse.predictions[0].terms[1].value;
 // 		parsedInput = city + ", " + state;
-// 		console.log(parsedInput);
 // 		$("#city").text(parsedInput);
 // 		pushToPastSearchesArray(parsedInput);
 // 		printPastSearches();
@@ -143,10 +140,8 @@ function search(input){
 
 // checks to see if pasedInput is already present in the pastSearches array//
 function pushToPastSearchesArray(parsedInput){
-	// console.log("push function");
 	if (pastSearches.indexOf(parsedInput) > -1) return;
 	pastSearches.push(parsedInput);
-	// console.log(pastSearches);
 };
 
 
@@ -163,8 +158,9 @@ function zipcodeFinder (){
 		url: zipcodeFullQueryUrl,
 		method: "GET"
 	}).done(function(response){
-		console.log(response);
 		zipcode = response.zip_codes[0];
+		jambase();
+		quandl();
 	});
 };
 
@@ -389,10 +385,7 @@ $("#citySearch").on("submit", function() {
 	// autoComplete(userInput);
 	search(userInput);
 	$("#location").val("");
-	// setTimeout(zipcodeFinder, 1000);
 	zipcodeFinder();
-	setTimeout(jambase, 3000);
-	setTimeout(quandl, 3000);
 	googleMap();
 	weatherInfo();
 	printPastSearches();
@@ -415,9 +408,6 @@ $(document).on("click", ".past-search", function(){
 	// autoComplete(userInput);
 	search(userInput);
 	zipcodeFinder();
-	// setTimeout(zipcodeFinder, 1000);
-	setTimeout(jambase, 3000);
-	setTimeout(quandl, 3000);
 	googleMap();
 	weatherInfo();
 	return false;
