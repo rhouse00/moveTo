@@ -1,4 +1,3 @@
-(function(){
 
 var userInput;   // search term from user is stored here.
 var parsedInput;   // output of autocomplete, in form of City, State.
@@ -20,16 +19,16 @@ var weatherKey = "&APPID=f66bce88fb7fff146e41f75c464a5549";
 var houseKey = "api_key=xrc6s3i5hYNG-hwzWrtx";
 
 // Firebase initilization
-// var config = {
-// 	apiKey: "AIzaSyB04EBE4lAomxsuidTOhzbx7ea128dh9Vg",
-// 	authDomain: "moveto-6bafd.firebaseapp.com",
-// 	databaseURL: "https://moveto-6bafd.firebaseio.com",
-// 	storageBucket: "moveto-6bafd.appspot.com",
-// 	messagingSenderId: "449877402191"
-// };
+var config = {
+	apiKey: "AIzaSyB2T52nvFpzImlnPs26NlMPG9pS6h0ihto",
+	authDomain: "moveto-5fe0c.firebaseapp.com",
+	databaseURL: "https://moveto-5fe0c.firebaseio.com",
+	storageBucket: "moveto-5fe0c.appspot.com",
+	messagingSenderId: "1037248697821"
+};
 
-// firebase.initializeApp(config);
-// var database = firebase.database();
+firebase.initializeApp(config);
+var database = firebase.database();
 
 
 // ------------------------------ Firebase Login, Register, Logout Functions -------------------------- /
@@ -46,11 +45,11 @@ function register(){
 		if (firebaseUser) {
 			loadAppKeys();
 			id =  firebaseUser.uid;
-			database.ref(id).set({userID: id, username: name})
-			database.ref(id).child("pastSearches").set(pastSearches);
+			database.ref('users').child(id).set({userID: id, username: name});
+			database.ref('users').child(id).child("pastSearches").set(pastSearches);
 			
 		} else {
-			// console.log("No user!")
+			console.log("No user!");
 		}   
 	});
 }
@@ -73,6 +72,7 @@ function loginFunction(){
 				if(snapShot.child("pastSearches").val() !== null){ // checks to make sure there is a value in the database node to prevent error //
 					pastSearches = snapShot.child("pastSearches").val();
 				}
+				console.log(snapShot.child('username'));
 				name = snapShot.child("username").val();
 				$("#nameDisplay").html("Welcome " + name);
 				printPastSearches();
@@ -81,21 +81,22 @@ function loginFunction(){
    	});
 };
 // retrieves api keys from firebase 
-// function loadAppKeys(){
-// 	database.ref(0).child("keys").once('value').then(function(snapShot){
-// 		placesKey = snapShot.child("placesKey").val();
-// 		zipcodeKey = snapShot.child("zipcodeKey").val();
-// 		googleKey = snapShot.child("googleKey").val();
-// 		jambaseKey = snapShot.child("jambaseKey").val();
-// 		weatherKey = snapShot.child("weatherKey").val();
-// 		houseKey = snapShot.child("houseKey").val();
-// 	})
-// }
+function loadAppKeys(){
+	database.ref(0).child("keys").once('value').then(function(snapShot){
+		placesKey = snapShot.child("placesKey").val();
+		zipcodeKey = snapShot.child("zipcodeKey").val();
+		googleKey = snapShot.child("googleKey").val();
+		jambaseKey = snapShot.child("jambaseKey").val();
+		weatherKey = snapShot.child("weatherKey").val();
+		houseKey = snapShot.child("houseKey").val();
+	});
+}
 // logOut function takes all searches made during session and stores them in the user 
 // specific tree in firebase.
 
 function logOut(){
-	database.ref(id).child("pastSearches").set(pastSearches);
+	
+	database.ref('users').child(id).child("pastSearches").set(pastSearches);
 	firebase.auth().signOut()
 	
 }
@@ -496,5 +497,3 @@ function logDisplay(){
 	$("#signOutButton").show();
 };
 
-
-})(this);
