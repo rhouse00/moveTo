@@ -1,7 +1,6 @@
 // Server Dependencies
 const express = require('express');
-const exphbs = require("express-handlebars");
-const bodyParser = require('body-parser');
+
 
 // Express Instance
 const app = express();
@@ -18,23 +17,15 @@ let allowCrossDomain = function(req, res, next) {
 
 app.use(allowCrossDomain);
 
-// Morgan initilize and bodyParser
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.text());
-app.use(bodyParser.json({ type: "application/vnd.api+json" }));
-
-// Grab public folder and Handlebars
-app.engine("handlebars", exphbs({ defaultLayout: "main" }));
-app.set("view engine", "handlebars");
+// Grab public folder
 app.use(express.static("./public"));
 
 
 // ------------------ Routes -------------------------------
 
 // Main route
-app.get('/', (req, res) => {
-  res.render('index');
+app.get("/", (req, res) => {
+  res.sendFile(__dirname + "/public/index.html");
 });
 
 
