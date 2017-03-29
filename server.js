@@ -1,11 +1,8 @@
 // Server Dependencies
-const express = require('express'),
-      bodyParser = require('body-parser'),
-      exphbs = require('express-handlebars'), 
-      methodOverride = require('method-override'),
-      firebase = require("firebase");
-// Express Instance
+const express = require('express');
 
+
+// Express Instance
 const app = express();
 
 // Set Port
@@ -20,16 +17,17 @@ let allowCrossDomain = function(req, res, next) {
 
 app.use(allowCrossDomain);
 
+// Grab public folder
 app.use(express.static("./public"));
-
 
 
 // ------------------ Routes -------------------------------
 
 // Main route
 app.get("/", (req, res) => {
-  res.render('index')
+  res.sendFile(__dirname + "/public/index.html");
 });
+
 
 // Listener
 app.listen(PORT, () => {

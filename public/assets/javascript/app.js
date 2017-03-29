@@ -1,4 +1,3 @@
-
 let userInput,   // search term from user is stored here.
     parsedInput,   // output of autocomplete, in form of City, State.
     city,   // City output of autocomplete function i.e. Los Angeles.
@@ -7,54 +6,47 @@ let userInput,   // search term from user is stored here.
     name,   // Name of user when they register or login.
     email,   // Email of user when they register or login.
     password,   // Password of user when they register or login.
-    id,   // UID of user in firebase.
     pastSearches = [],   // Array of past cities searched.
     graphData = [],   // Array of arrays of average rent vs time.
-    placesKey = "&key=AIzaSyCosNzeaDeb3bNZKdVQMu8AJxzQxaL6jDo",
-    zipcodeKey = "l24t8gV4cPlE14PoXJK9IfKnrGjaY8PkbTNk9IpmyK0zPPXMzIWhYGFqnZBm8qGj",
-    googleKey = "&key=AIzaSyAau6LZg7LxUiZ0KjzV_srJ3Ko37t7C1f4",
-    jambaseKey = "&api_key=pqzvessme5nr32v3wy5qzsfk&o=json",
-    weatherKey = "&APPID=f66bce88fb7fff146e41f75c464a5549",
-    houseKey = "api_key=xrc6s3i5hYNG-hwzWrtx";
-
+    placesKey,
+    zipcodeKey,
+    googleKey,
+    jambaseKey,
+    weatherKey,
+    houseKey;
+  
+  var  id;   // UID of user in firebase.
 // Firebase initilization
   const config = {
-    apiKey: "AIzaSyB2T52nvFpzImlnPs26NlMPG9pS6h0ihto",
-    authDomain: "moveto-5fe0c.firebaseapp.com",
-    databaseURL: "https://moveto-5fe0c.firebaseio.com",
-    storageBucket: "moveto-5fe0c.appspot.com",
-    messagingSenderId: "1037248697821"
+    apiKey: 'AIzaSyB2T52nvFpzImlnPs26NlMPG9pS6h0ihto',
+    authDomain: 'moveto-5fe0c.firebaseapp.com',
+    databaseURL: 'https://moveto-5fe0c.firebaseio.com',
+    storageBucket: 'moveto-5fe0c.appspot.com',
+    messagingSenderId: '1037248697821'
   };
 
 firebase.initializeApp(config);
 const database = firebase.database();
-
-database.ref('APIKEYS').set({placesKey,
-zipcodeKey,
-googleKey,
-jambaseKey,
-weatherKey,
-houseKey})
 
 // ------------------------------ Firebase Login, Register, Logout Functions -------------------------- /
 
 // register function adds user to firebase database based on their email, password, and name entries.
 
 function register(){
-    email = $("#email").val();
-    password = $("#password").val();
-    name = $("#name").val();
-	$("#nameDisplay").html("Welcome " + name);
+    email = $('#email').val();
+    password = $('#password').val();
+    name = $('#name').val();
+	$('#nameDisplay').html('Welcome ' + name);
     	
     firebase.auth().createUserWithEmailAndPassword(email, password).then(function(firebaseUser) {	
 		if (firebaseUser) {
 			loadAppKeys();
 			id =  firebaseUser.uid;
-			database.ref(id).set({userID: id, username: name})
-			database.ref(id).child("pastSearches").set(pastSearches);
+			database.ref('users').child(id).set({userID: id, username: name});
+			database.ref('users').child(id).child('pastSearches').set(pastSearches);
 			
 		} else {
-			// console.log("No user!")
+			console.log('No user!');
 		}   
 	});
 }
@@ -64,47 +56,51 @@ function register(){
 // firebase tree and read out past searches.
 
 function loginFunction(){
-    email = $("#email").val();
-    password = $("#password").val();
+    email = $('#email').val();
+    password = $('#password').val();
 
     firebase.auth().signInWithEmailAndPassword(email, password).then(function(firebaseUser) {  
   	    if (firebaseUser) {
   	    	loadAppKeys();
      	 	id =  firebaseUser.uid;	
 			pastSearches = [];
-			
-  	    	database.ref(id).once('value').then(function(snapShot){ 
-				if(snapShot.child("pastSearches").val() !== null){ // checks to make sure there is a value in the database node to prevent error //
-					pastSearches = snapShot.child("pastSearches").val();
+		
+  	    	database.ref('users').child(id).once('value').then(function(snapShot){ 
+				if(snapShot.child('pastSearches').val() !== null){ // checks to make sure there is a value in the database node to prevent error //
+					pastSearches = snapShot.child('pastSearches').val();
 				}
-				name = snapShot.child("username").val();
-				$("#nameDisplay").html("Welcome " + name);
+				console.log(snapShot.child('username'));
+				name = snapShot.child('username').val();
+				$('#nameDisplay').html('Welcome ' + name);
 				printPastSearches();
   	    	});
       	}
    	});
 };
-// retrieves api keys from firebase 
-// function loadAppKeys(){
-// 	database.ref(0).child("keys").once('value').then(function(snapShot){
-// 		placesKey = snapShot.child("placesKey").val();
-// 		zipcodeKey = snapShot.child("zipcodeKey").val();
-// 		googleKey = snapShot.child("googleKey").val();
-// 		jambaseKey = snapShot.child("jambaseKey").val();
-// 		weatherKey = snapShot.child("weatherKey").val();
-// 		houseKey = snapShot.child("houseKey").val();
-// 	})
-// }
+
 // logOut function takes all searches made during session and stores them in the user 
 // specific tree in firebase.
 
 function logOut(){
-	// console.log(id);
-	database.ref(id).child("pastSearches").set(pastSearches);
+	database.ref('users').child(id).child('pastSearches').set(pastSearches);
 	firebase.auth().signOut()
 	
 }
 
+
+
+
+// retrieves api keys from firebase 
+function loadAppKeys(){
+	database.ref().child('APIKEYS').once('value').then(function(snapShot){
+		placesKey = snapShot.child('placesKey').val();
+		zipcodeKey = snapShot.child('zipcodeKey').val();
+		googleKey = snapShot.child('googleKey').val();
+		jambaseKey = snapShot.child('jambaseKey').val();
+		weatherKey = snapShot.child('weatherKey').val();
+		houseKey = snapShot.child('houseKey').val();
+	});
+}
 
 // ------------------------------ User Input Parsing Functions --------------------------------- /
 
@@ -113,21 +109,19 @@ function logOut(){
 
 // function autoComplete(input){
 
-// 	var placesUrl = "https://maps.googleapis.com/maps/api/place/autocomplete/json?";
-// 	var placesInput = "input=" + input;
-// 	var placesType = "&types=geocode";
+// 	var placesUrl = 'https://maps.googleapis.com/maps/api/place/autocomplete/json?';
+// 	var placesInput = 'input=' + input;
+// 	var placesType = '&types=geocode';
 // 	var placesQueryUrl = placesUrl + placesInput + placesType + placesKey;
 
 // 	$.ajax({
 // 		url: placesQueryUrl,
-// 		method:"GET"
+// 		method:'GET'
 // 	}).done(function(placesResponse){
-// 		console.log("Im here now!");
 // 		city = placesResponse.predictions[0].terms[0].value;
 // 		state = placesResponse.predictions[0].terms[1].value;
-// 		parsedInput = city + ", " + state;
-// 		console.log(parsedInput);
-// 		$("#city").text(parsedInput);
+// 		parsedInput = city + ', ' + state;
+// 		$('#city').text(parsedInput);
 // 		pushToPastSearchesArray(parsedInput);
 // 		printPastSearches();
 // 	});
@@ -137,17 +131,15 @@ function search(input){
 	var info = input.split(', ');
 	city = info[0];
 	state = info[1];
-	$("#city").text(input);
+	$('#city').text(input);
 	pushToPastSearchesArray(input);
 	printPastSearches();
 }
 
 // checks to see if pasedInput is already present in the pastSearches array//
 function pushToPastSearchesArray(parsedInput){
-	// console.log("push function");
 	if (pastSearches.indexOf(parsedInput) > -1) return;
 	pastSearches.push(parsedInput);
-	// console.log(pastSearches);
 };
 
 // zipcodeFinder takes city and state of search, returns list of all zipcodes within city // 
@@ -155,18 +147,19 @@ function pushToPastSearchesArray(parsedInput){
 
 function zipcodeFinder (){
 	
-	var zipcodeQueryUrl = "https://crossorigin.me/https://www.zipcodeapi.com/rest/";
-	var zipcodeCity = "/city-zips.json/" + city;
-	var zipcodeState = "/"+ state + ".";
+	var zipcodeQueryUrl = 'https://crossorigin.me/https://www.zipcodeapi.com/rest/';
+	var zipcodeCity = '/city-zips.json/' + city;
+	var zipcodeState = '/'+ state + '.';
 	
 	var zipcodeFullQueryUrl = zipcodeQueryUrl +zipcodeKey + zipcodeCity + zipcodeState;
 
 	$.ajax({
 		url: zipcodeFullQueryUrl,
-		method: "GET"
+		method: 'GET'
 	}).done(function(response){
-		
 		zipcode = response.zip_codes[0];
+		jambase();
+		quandl();
 	});
 };
 
@@ -177,21 +170,21 @@ function zipcodeFinder (){
 // link to google.maps.com or that specific city.
 
 function googleMap () {
-	$(".googleMapDiv").empty();
-	var mapUrl = "https://maps.googleapis.com/maps/api/staticmap?center=";
-	var zoom = "&zoom=14";
-	var size = "&size=425x275&scale=1"
+	$('.googleMapDiv').empty();
+	var mapUrl = 'https://maps.googleapis.com/maps/api/staticmap?center=';
+	var zoom = '&zoom=14';
+	var size = '&size=425x275&scale=1'
 
 	var fullMapUrl = mapUrl + userInput + zoom + size + googleKey;
-	var mapLink = $("<a>");
-	var newMap = $("<img>");
+	var mapLink = $('<a>');
+	var newMap = $('<img>');
 
-	newMap.attr("src", fullMapUrl);
-	newMap.addClass("googleMap");
+	newMap.attr('src', fullMapUrl);
+	newMap.addClass('googleMap');
 	mapLink.append(newMap);
-	mapLink.attr("href", "https://www.google.com/maps/place/"+userInput);
-	mapLink.attr("target", "_blank");
-	$(".googleMapDiv").append(mapLink);
+	mapLink.attr('href', 'https://www.google.com/maps/place/'+userInput);
+	mapLink.attr('target', '_blank');
+	$('.googleMapDiv').append(mapLink);
 };
 
 
@@ -202,16 +195,16 @@ function googleMap () {
 function jambase(){
 
 	
-	var jambaseQueryUrl = "http://api.jambase.com/events?";
-	var jambaseZipcode = "zipcode=" + zipcode;
+	var jambaseQueryUrl = 'http://api.jambase.com/events?';
+	var jambaseZipcode = 'zipcode=' + zipcode;
 	var numberPages = 0;
-	var jambasePages = "&page=" + numberPages
+	var jambasePages = '&page=' + numberPages
 
 	var jambaseFullQueryUrl = jambaseQueryUrl + jambaseZipcode + jambasePages + jambaseKey;
 
 	$.ajax({
 		url: jambaseFullQueryUrl,
-		method: "GET"
+		method: 'GET'
 	})
 	.done(function(response){
 		var results = response.Events;
@@ -223,29 +216,29 @@ function jambase(){
 // addMusicEvents function takes the concert info from above and prints it to the website
 
 function addMusicEvents(results) {
-	$("#musicBody").empty();
+	$('#musicBody').empty();
 	for(var i = 0; i < 15; i++) {
-		var newTr = $("<tr>");
-		var newDateTd = $("<td>").addClass("mdl-data-table__cell--non-numeric");
-		var newNameTd = $("<td>");
-		var newVenueTd = $("<td>");
-		var newTixTd = $("<td>");
-		var date = moment(results[i].Date).format("MMM Do YY");
+		var newTr = $('<tr>');
+		var newDateTd = $('<td>').addClass('mdl-data-table__cell--non-numeric');
+		var newNameTd = $('<td>');
+		var newVenueTd = $('<td>');
+		var newTixTd = $('<td>');
+		var date = moment(results[i].Date).format('MMM Do YY');
 		var name = results[i].Artists[0].Name;
 		var venue = results[i].Venue.Name;
 		var tix = results[i].TicketUrl;
-		var tixLink = $("<a>");
+		var tixLink = $('<a>');
 
 		newDateTd.text(date);
 		newNameTd.text(name);
 		newVenueTd.text(venue);
-		tixLink.text("Tickets");
-		tixLink.attr("href", tix);
-		tixLink.attr("target", "_blank");
+		tixLink.text('Tickets');
+		tixLink.attr('href', tix);
+		tixLink.attr('target', '_blank');
 		newTixTd.append(tixLink);
 
 		newTr.append(newDateTd, newNameTd, newTixTd, newVenueTd);
-		$("#musicBody").append(newTr)
+		$('#musicBody').append(newTr)
 	}
 };
 
@@ -256,12 +249,12 @@ function addMusicEvents(results) {
 
 function weatherInfo () {
 	
-	var numResults = "&cnt=7";
-	var outputType = "&mode=json";
-	var weatherQueryUrl = "http://api.openweathermap.org/data/2.5/forecast/daily?q=" + city + outputType + numResults + weatherKey;
+	var numResults = '&cnt=7';
+	var outputType = '&mode=json';
+	var weatherQueryUrl = 'http://api.openweathermap.org/data/2.5/forecast/daily?q=' + city + outputType + numResults + weatherKey;
 	$.ajax({
 		url: weatherQueryUrl,
-		method: "GET"
+		method: 'GET'
 	})
 	.done (function(response){
 		addWeather(response);
@@ -273,25 +266,25 @@ function weatherInfo () {
 
 function addWeather (response) {
 	var results = response.list;
-	$("#weatherBody").empty();
+	$('#weatherBody').empty();
 	for (var i = 0; i < results.length; i++) {
 		var high = Math.ceil(response.list[i].temp.max * 9/5 - 459.67);
 		var low = Math.ceil(response.list[i].temp.min  * 9/5 - 459.67);
-		var date = moment.unix(response.list[i].dt).format("MMM Do YYYY");
+		var date = moment.unix(response.list[i].dt).format('MMM Do YYYY');
 		var image = response.list[i].weather[0].icon;
-		var newTr = $("<tr>");
-		var newDateTd = $("<td>");
-		var newWeatherTd = $("<img>")
-		var newHighTd = $("<td>");
-		var newLowTd = $("<td>");
+		var newTr = $('<tr>');
+		var newDateTd = $('<td>');
+		var newWeatherTd = $('<img>')
+		var newHighTd = $('<td>');
+		var newLowTd = $('<td>');
 
-		newWeatherTd.attr("src", "http://openweathermap.org/img/w/"+image+".png");
+		newWeatherTd.attr('src', 'http://openweathermap.org/img/w/'+image+'.png');
 		newDateTd.text(date);
 		newHighTd.text(high);
 		newLowTd.text(low);
 
 		$(newTr).append(newDateTd, newWeatherTd, newHighTd, newLowTd);
-		$("#weatherBody").append(newTr);
+		$('#weatherBody').append(newTr);
 	}
 }
 
@@ -301,31 +294,31 @@ function addWeather (response) {
 // quandl function takes zipcode, queries quandl API, and returns average rent per month data of city.
 
 function quandl(){
-	var houseQueryUrl = "https://www.quandl.com/api/v3/datasets/ZILL/";
+	var houseQueryUrl = 'https://www.quandl.com/api/v3/datasets/ZILL/';
 	
 	var numResults = 10;
-	var addLimit = "limit=" + numResults;
+	var addLimit = 'limit=' + numResults;
 
 	var city = 10001;
-	var format = ".json?"
+	var format = '.json?'
 
 	var areaType = {
-		city: "C",
-		zipcode: "Z"
+		city: 'C',
+		zipcode: 'Z'
 	};
 
 	var housingType = {
-		allHomes: "_A",
-		singleFamily: "_SF",
-		medianRent: "_RMP",
-		medianListPrice: "_MLP",
+		allHomes: '_A',
+		singleFamily: '_SF',
+		medianRent: '_RMP',
+		medianListPrice: '_MLP',
 	};
 
 	var fullQueryZipcode = houseQueryUrl + areaType.zipcode + zipcode + housingType.medianRent + format + houseKey;
 	
 	$.ajax({
 		url: fullQueryZipcode,
-		method: "GET",	
+		method: 'GET',	
 	})
 	.done(function(response){
 		var results = response.dataset.data;
@@ -338,10 +331,10 @@ function quandl(){
 // then calls google charts library to print data to page.
 
 function addHomeInfo(results) {
-	$("#statsBody").empty();
+	$('#statsBody').empty();
 	for (var i = 0; i < results.length; i++) {
 		var price = results[i][1];
-		var date = moment(results[i][0]).format("MMM YYYY");
+		var date = moment(results[i][0]).format('MMM YYYY');
 		var dataPoint = [date, price];
 		graphData.push(dataPoint);
 	};
@@ -358,43 +351,40 @@ function addHomeInfo(results) {
 
 function drawChart() {
 	var data = new google.visualization.DataTable();
-	data.addColumn("string", "Date");
-	data.addColumn("number", "Rent");
+	data.addColumn('string', 'Date');
+	data.addColumn('number', 'Rent');
 	data.addRows(graphData);
 
 	var options = {
 		width:500,
 		height:300,
 		vAxis: {
-			title: "Average Rent in $"
+			title: 'Average Rent in $'
 		}
 	}
 
-	var chart = new google.visualization.LineChart(document.getElementById("rentGraph"));
+	var chart = new google.visualization.LineChart(document.getElementById('rentGraph'));
 	chart.draw(data, options);
 };
 
 
 // ------------------------------ On Click Events and DOM Manipulation --------------------------------- /
 
-$(".mdl-cell--6-col").hide();
-$("#signOutButton").hide();
-$("#signInButton").hide();
+$('.mdl-cell--6-col').hide();
+$('#signOutButton').hide();
+$('#signInButton').hide();
 
 // event listener attached to search bar, sets global variables for session, 
 // calls functions to get info from APIs.
 
-$("#citySearch").on("submit", function() {
-	$(".mdl-cell--6-col").show();
-	$("#search").css("margin-top", "0");
-	userInput = $("#location").val().trim();
+$('#citySearch').on('submit', function() {
+	$('.mdl-cell--6-col').show();
+	$('#search').css('margin-top', '0');
+	userInput = $('#location').val().trim();
 	// autoComplete(userInput);
 	search(userInput);
-	$("#location").val("");
-	// setTimeout(zipcodeFinder, 1000);
+	$('#location').val('');
 	zipcodeFinder();
-	setTimeout(jambase, 3000);
-	setTimeout(quandl, 3000);
 	googleMap();
 	weatherInfo();
 	printPastSearches();
@@ -405,8 +395,8 @@ $("#citySearch").on("submit", function() {
 // event listener attached to past searches sidebar. On click of a city button, 
 // it will search that term as if the user had typed it in the search bar.
 
-$(document).on("click", ".past-search", function(){
-	userInput = $(this).data("term");
+$(document).on('click', '.past-search', function(){
+	userInput = $(this).data('term');
 	$('.displayPannel').show();
 	$('#map').show();
 	for (var i = 0; i < pastSearches.length; i++) {
@@ -417,9 +407,6 @@ $(document).on("click", ".past-search", function(){
 	// autoComplete(userInput);
 	search(userInput);
 	zipcodeFinder();
-	// setTimeout(zipcodeFinder, 1000);
-	setTimeout(jambase, 3000);
-	setTimeout(quandl, 3000);
 	googleMap();
 	weatherInfo();
 	return false;
@@ -430,20 +417,20 @@ $(document).on("click", ".past-search", function(){
 // all sessions for logged in) and prints them the side bar.
 
 function printPastSearches(){
-	$("#pastSearchesList").empty();
+	$('#pastSearchesList').empty();
 	for (var i = 0; i < pastSearches.length; i++) {
-		var button = $("<a>");
-		button.addClass("mdl-button mdl-js-button mdl-js-ripple-effect past-search");
+		var button = $('<a>');
+		button.addClass('mdl-button mdl-js-button mdl-js-ripple-effect past-search');
 		button.text(pastSearches[i]);
-		button.attr("data-term", pastSearches[i]);
-		$("#pastSearchesList").prepend(button);
+		button.attr('data-term', pastSearches[i]);
+		$('#pastSearchesList').prepend(button);
 	}
 };
 
 
 // event listener on login button that will run loginFunction.
 
-$("#loginButton").on("click", function(){
+$('#loginButton').on('click', function(){
 	loginFunction();
 	logDisplay();
 });
@@ -451,7 +438,7 @@ $("#loginButton").on("click", function(){
 
 // event listener on register button that will run the register function.
 
-$("#registerButton").on("click", function(){
+$('#registerButton').on('click', function(){
 	register();
 	logDisplay();
 });
@@ -460,53 +447,53 @@ $("#registerButton").on("click", function(){
 // event listener on continue as guest button that will allow user to use site 
 // without logging in or registering.
 
-$("#guestButton").on("click", function(){
+$('#guestButton').on('click', function(){
 	logDisplay();
-	$("#nameDisplay").html("Past Searches");
-	$("#signOutButton").hide();
-	$("#signInButton").show();
+	$('#nameDisplay').html('Past Searches');
+	$('#signOutButton').hide();
+	$('#signInButton').show();
 });
 
 
 // event listener on signout button, calling logout fuction to push session data to firebase, 
 // and bringing up login modal.
 
-$("#signOutButton").on("click", function(){
+$('#signOutButton').on('click', function(){
 	$('.displayPannel').hide();
 	$('#map').hide();
-	$("#city").empty();
-	$("#overlay").show();
-	$(".card-wide").show();
-	$("#signInButton").hide();
-	$("#signOutButton").hide();
-	$("#nameDisplay").html("");
-	$(".card-wide").css("margin-top", "-150px");
-	$("#pastSearchesList").empty();
+	$('#city').empty();
+	$('#overlay').show();
+	$('.card-wide').show();
+	$('#signInButton').hide();
+	$('#signOutButton').hide();
+	$('#nameDisplay').html('');
+	$('.card-wide').css('margin-top', '-150px');
+	$('#pastSearchesList').empty();
 	logOut();
 });
 
 
 // event listener on signin button, allowing users who chose to continue as guest to now register / login.
 
-$("#signInButton").on("click", function(){
+$('#signInButton').on('click', function(){
 	loginFunction();
-	$("#overlay").show();
-	$(".card-wide").show();
-	$("#signOutButton").hide();
-	$("#signInButton").hide();
-	$("#nameDisplay").html("");
-	$(".card-wide").css("margin-top", "-150px");
+	$('#overlay').show();
+	$('.card-wide').show();
+	$('#signOutButton').hide();
+	$('#signInButton').hide();
+	$('#nameDisplay').html('');
+	$('.card-wide').css('margin-top', '-150px');
 });
 
 
 // logDisplay function houses DOM manipulation calls that are the same for more than one button.
 
 function logDisplay(){
-	$("#overlay").hide();
-	$(".card-wide").hide();
-	$("#email").val("");
-	$("#name").val("");
-	$("#password").val("");
-	$("#signOutButton").show();
+	$('#overlay').hide();
+	$('.card-wide').hide();
+	$('#email').val('');
+	$('#name').val('');
+	$('#password').val('');
+	$('#signOutButton').show();
 };
 
