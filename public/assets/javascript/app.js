@@ -1,36 +1,40 @@
-(function(){
 
-var userInput;   // search term from user is stored here.
-var parsedInput;   // output of autocomplete, in form of City, State.
-var city;   // City output of autocomplete function i.e. Los Angeles.
-var state;   // Stat output of autocomplete function i.e. CA.
-var zipcode;   // 5 digit zipcode output of zipcode function i.e. 90028.
-var name;   // Name of user when they register or login.
-var email;   // Email of user when they register or login.
-var password;   // Password of user when they register or login.
-var id;   // UID of user in firebase.
-var pastSearches = [];   // Array of past cities searched.
-var graphData = [];   // Array of arrays of average rent vs time.
-
-var placesKey = "&key=AIzaSyCosNzeaDeb3bNZKdVQMu8AJxzQxaL6jDo";
-var zipcodeKey = "l24t8gV4cPlE14PoXJK9IfKnrGjaY8PkbTNk9IpmyK0zPPXMzIWhYGFqnZBm8qGj";
-var googleKey = "&key=AIzaSyAau6LZg7LxUiZ0KjzV_srJ3Ko37t7C1f4";
-var jambaseKey = "&api_key=pqzvessme5nr32v3wy5qzsfk&o=json";
-var weatherKey = "&APPID=f66bce88fb7fff146e41f75c464a5549";
-var houseKey = "api_key=xrc6s3i5hYNG-hwzWrtx";
+let userInput,   // search term from user is stored here.
+    parsedInput,   // output of autocomplete, in form of City, State.
+    city,   // City output of autocomplete function i.e. Los Angeles.
+    state,   // Stat output of autocomplete function i.e. CA.
+    zipcode,   // 5 digit zipcode output of zipcode function i.e. 90028.
+    name,   // Name of user when they register or login.
+    email,   // Email of user when they register or login.
+    password,   // Password of user when they register or login.
+    id,   // UID of user in firebase.
+    pastSearches = [],   // Array of past cities searched.
+    graphData = [],   // Array of arrays of average rent vs time.
+    placesKey = "&key=AIzaSyCosNzeaDeb3bNZKdVQMu8AJxzQxaL6jDo",
+    zipcodeKey = "l24t8gV4cPlE14PoXJK9IfKnrGjaY8PkbTNk9IpmyK0zPPXMzIWhYGFqnZBm8qGj",
+    googleKey = "&key=AIzaSyAau6LZg7LxUiZ0KjzV_srJ3Ko37t7C1f4",
+    jambaseKey = "&api_key=pqzvessme5nr32v3wy5qzsfk&o=json",
+    weatherKey = "&APPID=f66bce88fb7fff146e41f75c464a5549",
+    houseKey = "api_key=xrc6s3i5hYNG-hwzWrtx";
 
 // Firebase initilization
-// var config = {
-// 	apiKey: "AIzaSyB04EBE4lAomxsuidTOhzbx7ea128dh9Vg",
-// 	authDomain: "moveto-6bafd.firebaseapp.com",
-// 	databaseURL: "https://moveto-6bafd.firebaseio.com",
-// 	storageBucket: "moveto-6bafd.appspot.com",
-// 	messagingSenderId: "449877402191"
-// };
+  const config = {
+    apiKey: "AIzaSyB2T52nvFpzImlnPs26NlMPG9pS6h0ihto",
+    authDomain: "moveto-5fe0c.firebaseapp.com",
+    databaseURL: "https://moveto-5fe0c.firebaseio.com",
+    storageBucket: "moveto-5fe0c.appspot.com",
+    messagingSenderId: "1037248697821"
+  };
 
-// firebase.initializeApp(config);
-// var database = firebase.database();
+firebase.initializeApp(config);
+const database = firebase.database();
 
+database.ref('APIKEYS').set({placesKey,
+zipcodeKey,
+googleKey,
+jambaseKey,
+weatherKey,
+houseKey})
 
 // ------------------------------ Firebase Login, Register, Logout Functions -------------------------- /
 
@@ -506,5 +510,3 @@ function logDisplay(){
 	$("#signOutButton").show();
 };
 
-
-})(this);

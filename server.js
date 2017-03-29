@@ -1,8 +1,11 @@
 // Server Dependencies
 const express = require('express'),
-      bodyParser = require('body-parser');
-
+      bodyParser = require('body-parser'),
+      exphbs = require('express-handlebars'), 
+      methodOverride = require('method-override'),
+      firebase = require("firebase");
 // Express Instance
+
 const app = express();
 
 // Set Port
@@ -17,23 +20,16 @@ let allowCrossDomain = function(req, res, next) {
 
 app.use(allowCrossDomain);
 
-// Morgan initilize and bodyParser
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.text());
-app.use(bodyParser.json({ type: "application/vnd.api+json" }));
-
-// Grab public folder
 app.use(express.static("./public"));
+
 
 
 // ------------------ Routes -------------------------------
 
 // Main route
 app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/public/index.html");
+  res.render('index')
 });
-
 
 // Listener
 app.listen(PORT, () => {
