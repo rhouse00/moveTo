@@ -13,7 +13,7 @@ let userInput,   // search term from user is stored here.
     // googleKey,
     // jambaseKey,
     // weatherKey,
-    houseKey;
+    // houseKey;
 let houseKey = 'api_key=xrc6s3i5hYNG-hwzWrtx';
 let googleKey = '&key=AIzaSyAau6LZg7LxUiZ0KjzV_srJ3Ko37t7C1f4';
 let weatherKey = "193249f07590eac5bc80e84e4709da36";
