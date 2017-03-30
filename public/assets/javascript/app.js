@@ -8,18 +8,18 @@ let userInput,   // search term from user is stored here.
     password,   // Password of user when they register or login.
     pastSearches = [],   // Array of past cities searched.
     graphData = [],   // Array of arrays of average rent vs time.
-    placesKey;
-    // zipcodeKey,
-    // googleKey,
-    // jambaseKey,
-    // weatherKey,
-    // houseKey;
+    placesKey,
+    zipcodeKey,
+    googleKey,
+    jambaseKey,
+    weatherKey,
+    houseKey;
 
-let houseKey = 'api_key=xrc6s3i5hYNG-hwzWrtx';
-let googleKey = '&key=AIzaSyAau6LZg7LxUiZ0KjzV_srJ3Ko37t7C1f4';
-let weatherKey = "193249f07590eac5bc80e84e4709da36";
-let zipcodeKey = 'imEiYu7dtHr4ocGBcWp7P1nOUdfnt61MsF4q9cDDU5HjhnUujkB9lZYgddDGjFtL';
-let jambaseKey = 'qjxd658jgqut8g3vydvfqbj6';
+// let houseKey = 'api_key=xrc6s3i5hYNG-hwzWrtx';
+// let googleKey = '&key=AIzaSyAau6LZg7LxUiZ0KjzV_srJ3Ko37t7C1f4';
+// let weatherKey = "193249f07590eac5bc80e84e4709da36";
+// let zipcodeKey = 'imEiYu7dtHr4ocGBcWp7P1nOUdfnt61MsF4q9cDDU5HjhnUujkB9lZYgddDGjFtL';
+// let jambaseKey = 'qjxd658jgqut8g3vydvfqbj6';
   
 let  id;   // UID of user in firebase.
 
