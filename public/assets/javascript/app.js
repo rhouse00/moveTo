@@ -14,14 +14,14 @@ let userInput,   // search term from user is stored here.
     // jambaseKey,
     // weatherKey,
     // houseKey;
-	
+
 let houseKey = 'api_key=xrc6s3i5hYNG-hwzWrtx';
 let googleKey = '&key=AIzaSyAau6LZg7LxUiZ0KjzV_srJ3Ko37t7C1f4';
 let weatherKey = "193249f07590eac5bc80e84e4709da36";
 let zipcodeKey = 'imEiYu7dtHr4ocGBcWp7P1nOUdfnt61MsF4q9cDDU5HjhnUujkB9lZYgddDGjFtL';
 let jambaseKey = 'qjxd658jgqut8g3vydvfqbj6';
   
-  var  id;   // UID of user in firebase.
+let  id;   // UID of user in firebase.
 
 // Firebase initilization
   const config = {
@@ -135,7 +135,7 @@ function loadAppKeys(){
 // };
 
 function search(input){
-	var info = input.split(', ');
+	let info = input.split(', ');
 	city = info[0];
 	state = info[1];
 	$('#city').text(input);
@@ -154,12 +154,12 @@ function pushToPastSearchesArray(parsedInput){
 // zipcodeFinder takes city and state of search, returns list of all zipcodes within city // 
 function zipcodeFinder (){
 	
-	var zipcodeQueryUrl = 'https://crossorigin.me/https://www.zipcodeapi.com/rest/';
-	var zipcodeCity = '/city-zips.json/' + city;
-	var zipcodeState = '/'+ state;
+	let zipcodeQueryUrl = 'https://crossorigin.me/https://www.zipcodeapi.com/rest/';
+	let zipcodeCity = '/city-zips.json/' + city;
+	let zipcodeState = '/'+ state;
 
 	
-	var zipcodeFullQueryUrl = zipcodeQueryUrl + zipcodeKey + zipcodeCity + zipcodeState;
+	let zipcodeFullQueryUrl = zipcodeQueryUrl + zipcodeKey + zipcodeCity + zipcodeState;
 	
 	$.ajax({
 		url: zipcodeFullQueryUrl,
@@ -179,13 +179,13 @@ function zipcodeFinder (){
 
 function googleMap () {
 	$('.googleMapDiv').empty();
-	var mapUrl = 'https://maps.googleapis.com/maps/api/staticmap?center=';
-	var zoom = '&zoom=14';
-	var size = '&size=425x275&scale=1'
+	let mapUrl = 'https://maps.googleapis.com/maps/api/staticmap?center=';
+	let zoom = '&zoom=14';
+	let size = '&size=425x275&scale=1'
 
-	var fullMapUrl = mapUrl + userInput + zoom + size + googleKey;
-	var mapLink = $('<a>');
-	var newMap = $('<img>');
+	let fullMapUrl = mapUrl + userInput + zoom + size + googleKey;
+	let mapLink = $('<a>');
+	let newMap = $('<img>');
 
 	newMap.attr('src', fullMapUrl);
 	newMap.addClass('googleMap');
@@ -201,22 +201,18 @@ function googleMap () {
 // jambase takes random zipcode within city, queries jambase API, and returns concert information.
 
 function jambase(){
-
-	
-	var jambaseQueryUrl = 'http://api.jambase.com/events?';
-	var jambaseZipcode = 'zipcode=' + zipcode;
-	var numberPages = 1;
-	var jambasePages = '&page=' + numberPages
-
-
-	var jambaseFullQueryUrl = jambaseQueryUrl + jambaseZipcode + jambasePages + '&api_key=' + jambaseKey;
+	let jambaseQueryUrl = 'http://api.jambase.com/events?';
+	let jambaseZipcode = 'zipcode=' + zipcode;
+	let numberPages = 1;
+	let jambasePages = '&page=' + numberPages
+	let jambaseFullQueryUrl = jambaseQueryUrl + jambaseZipcode + jambasePages + '&api_key=' + jambaseKey;
 
 	$.ajax({
 		url: jambaseFullQueryUrl,
 		method: 'GET'
 	})
 	.done(function(response){
-		var results = response.Events;
+		let results = response.Events;
 		addMusicEvents(results);
 	});
 };
@@ -226,18 +222,18 @@ function jambase(){
 
 function addMusicEvents(results) {
 	$('#musicBody').empty();
-	for(var i = 0; i < 15; i++) {
+	for(let i = 0; i < 15; i++) {
 
-		var newTr = $('<tr>');
-		var newDateTd = $('<td>').addClass('mdl-data-table__cell--non-numeric');
-		var newNameTd = $('<td>');
-		var newVenueTd = $('<td>');
-		var newTixTd = $('<td>');
-		var date = moment(results[i].Date).format('MMM Do YY');
-		var name = results[i].Artists[0].Name;
-		var venue = results[i].Venue.Name;
-		var tix = results[i].TicketUrl;
-		var tixLink = $('<a>');
+		let newTr = $('<tr>');
+		let newDateTd = $('<td>').addClass('mdl-data-table__cell--non-numeric');
+		let newNameTd = $('<td>');
+		let newVenueTd = $('<td>');
+		let newTixTd = $('<td>');
+		let date = moment(results[i].Date).format('MMM Do YY');
+		let name = results[i].Artists[0].Name;
+		let venue = results[i].Venue.Name;
+		let tix = results[i].TicketUrl;
+		let tixLink = $('<a>');
 
 		newDateTd.text(date);
 		newNameTd.text(name);
@@ -276,16 +272,16 @@ function weatherInfo () {
 function addWeather (response) {
 	var results = response.list;
 	$('#weatherBody').empty();
-	for (var i = 0; i < results.length; i++) {
-		var high = Math.ceil(response.list[i].temp.max * 9/5 - 459.67);
-		var low = Math.ceil(response.list[i].temp.min  * 9/5 - 459.67);
-		var date = moment.unix(response.list[i].dt).format('MMM Do YYYY');
-		var image = response.list[i].weather[0].icon;
-		var newTr = $('<tr>');
-		var newDateTd = $('<td>');
-		var newWeatherTd = $('<img>')
-		var newHighTd = $('<td>');
-		var newLowTd = $('<td>');
+	for (let i = 0; i < results.length; i++) {
+		let high = Math.ceil(response.list[i].temp.max * 9/5 - 459.67);
+		let low = Math.ceil(response.list[i].temp.min  * 9/5 - 459.67);
+		let date = moment.unix(response.list[i].dt).format('MMM Do YYYY');
+		let image = response.list[i].weather[0].icon;
+		let newTr = $('<tr>');
+		let newDateTd = $('<td>');
+		let newWeatherTd = $('<img>')
+		let newHighTd = $('<td>');
+		let newLowTd = $('<td>');
 
 		newWeatherTd.attr('src', 'http://openweathermap.org/img/w/'+image+'.png');
 		newDateTd.text(date);
@@ -303,34 +299,29 @@ function addWeather (response) {
 // quandl function takes zipcode, queries quandl API, and returns average rent per month data of city.
 
 function quandl(){
-	var houseQueryUrl = 'https://www.quandl.com/api/v3/datasets/ZILL/';
-	
-	var numResults = 10;
-	var addLimit = 'limit=' + numResults;
-
-	var city = 10001;
-	var format = '.json?'
-
-	var areaType = {
+	let houseQueryUrl = 'https://www.quandl.com/api/v3/datasets/ZILL/';
+	let numResults = 10;
+	let addLimit = 'limit=' + numResults;
+	let city = 10001;
+	let format = '.json?'
+	let areaType = {
 		city: 'C',
 		zipcode: 'Z'
 	};
-
-	var housingType = {
+	let housingType = {
 		allHomes: '_A',
 		singleFamily: '_SF',
 		medianRent: '_RMP',
 		medianListPrice: '_MLP',
 	};
-
-	var fullQueryZipcode = houseQueryUrl + areaType.zipcode + zipcode + housingType.medianRent + format + houseKey;
+	let fullQueryZipcode = houseQueryUrl + areaType.zipcode + zipcode + housingType.medianRent + format + houseKey;
 	
 	$.ajax({
 		url: fullQueryZipcode,
 		method: 'GET',	
 	})
 	.done(function(response){
-		var results = response.dataset.data;
+		let results = response.dataset.data;
 		addHomeInfo(results);
 	});
 };
@@ -341,10 +332,10 @@ function quandl(){
 
 function addHomeInfo(results) {
 	$('#statsBody').empty();
-	for (var i = 0; i < results.length; i++) {
-		var price = results[i][1];
-		var date = moment(results[i][0]).format('MMM YYYY');
-		var dataPoint = [date, price];
+	for (let i = 0; i < results.length; i++) {
+		let price = results[i][1];
+		let date = moment(results[i][0]).format('MMM YYYY');
+		let dataPoint = [date, price];
 		graphData.push(dataPoint);
 	};
 
@@ -359,12 +350,12 @@ function addHomeInfo(results) {
 // drawChart function uses google charts library to create a line graph of average rent vs time.
 
 function drawChart() {
-	var data = new google.visualization.DataTable();
+	let data = new google.visualization.DataTable();
 	data.addColumn('string', 'Date');
 	data.addColumn('number', 'Rent');
 	data.addRows(graphData);
 
-	var options = {
+	let options = {
 		width:500,
 		height:300,
 		vAxis: {
@@ -372,7 +363,7 @@ function drawChart() {
 		}
 	}
 
-	var chart = new google.visualization.LineChart(document.getElementById('rentGraph'));
+	let chart = new google.visualization.LineChart(document.getElementById('rentGraph'));
 	chart.draw(data, options);
 };
 
@@ -408,7 +399,7 @@ $(document).on('click', '.past-search', function(){
 	userInput = $(this).data('term');
 	$('.displayPannel').show();
 	$('#map').show();
-	for (var i = 0; i < pastSearches.length; i++) {
+	for (let i = 0; i < pastSearches.length; i++) {
 		if (userInput === pastSearches[i]){
 			pastSearches.splice(i, 1);
 		};
@@ -427,8 +418,8 @@ $(document).on('click', '.past-search', function(){
 
 function printPastSearches(){
 	$('#pastSearchesList').empty();
-	for (var i = 0; i < pastSearches.length; i++) {
-		var button = $('<a>');
+	for (let i = 0; i < pastSearches.length; i++) {
+		let button = $('<a>');
 		button.addClass('mdl-button mdl-js-button mdl-js-ripple-effect past-search');
 		button.text(pastSearches[i]);
 		button.attr('data-term', pastSearches[i]);
