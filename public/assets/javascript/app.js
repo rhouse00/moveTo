@@ -9,11 +9,14 @@ let userInput,   // search term from user is stored here.
     pastSearches = [],   // Array of past cities searched.
     graphData = [],   // Array of arrays of average rent vs time.
     placesKey,
-    zipcodeKey,
+    // zipcodeKey,
     googleKey,
-    jambaseKey,
-    weatherKey,
+    // jambaseKey,
+    // weatherKey,
     houseKey;
+let weatherKey = "193249f07590eac5bc80e84e4709da36";
+let zipcodeKey = 'imEiYu7dtHr4ocGBcWp7P1nOUdfnt61MsF4q9cDDU5HjhnUujkB9lZYgddDGjFtL';
+let jambaseKey = 'qjxd658jgqut8g3vydvfqbj6';
   
   var  id;   // UID of user in firebase.
 
@@ -150,7 +153,7 @@ function zipcodeFinder (){
 	
 	var zipcodeQueryUrl = 'https://crossorigin.me/https://www.zipcodeapi.com/rest/';
 	var zipcodeCity = '/city-zips.json/' + city;
-	var zipcodeState = '/'+ state + '.';
+	var zipcodeState = '/'+ state;
 
 	
 	var zipcodeFullQueryUrl = zipcodeQueryUrl + zipcodeKey + zipcodeCity + zipcodeState;
@@ -203,7 +206,7 @@ function jambase(){
 	var jambasePages = '&page=' + numberPages
 
 
-	var jambaseFullQueryUrl = jambaseQueryUrl + jambaseZipcode + jambasePages + jambaseKey;
+	var jambaseFullQueryUrl = jambaseQueryUrl + jambaseZipcode + jambasePages + '&apikey=' + jambaseKey;
 
 	$.ajax({
 		url: jambaseFullQueryUrl,
@@ -253,9 +256,8 @@ function addMusicEvents(results) {
 
 function weatherInfo () {
 	
-	var numResults = '&cnt=7';
-	var outputType = '&mode=json';
-	var weatherQueryUrl = 'http://api.openweathermap.org/data/2.5/forecast/daily?q=' + city + outputType + numResults + weatherKey;
+	let numResults = '&cnt=7';
+	let weatherQueryUrl = 'http://api.openweathermap.org/data/2.5/forecast/daily?q=' + city + numResults + '&APPID=' + weatherKey;
 	$.ajax({
 		url: weatherQueryUrl,
 		method: 'GET'
