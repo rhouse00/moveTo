@@ -8,7 +8,7 @@ let userInput,   // search term from user is stored here.
     password,   // Password of user when they register or login.
     pastSearches = [],   // Array of past cities searched.
     graphData = [],   // Array of arrays of average rent vs time.
-    placesKey,
+    placesKey;
     // zipcodeKey,
     // googleKey,
     // jambaseKey,
