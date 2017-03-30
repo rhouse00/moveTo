@@ -202,7 +202,7 @@ function jambase(){
 	
 	var jambaseQueryUrl = 'http://api.jambase.com/events?';
 	var jambaseZipcode = 'zipcode=' + zipcode;
-	var numberPages = 0;
+	var numberPages = 1;
 	var jambasePages = '&page=' + numberPages
 
 
