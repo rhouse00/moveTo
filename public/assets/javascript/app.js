@@ -206,7 +206,7 @@ function jambase(){
 	var jambasePages = '&page=' + numberPages
 
 
-	var jambaseFullQueryUrl = jambaseQueryUrl + jambaseZipcode + jambasePages + '&apikey=' + jambaseKey;
+	var jambaseFullQueryUrl = jambaseQueryUrl + jambaseZipcode + jambasePages + '&api_key=' + jambaseKey;
 
 	$.ajax({
 		url: jambaseFullQueryUrl,
