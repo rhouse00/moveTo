@@ -14,7 +14,8 @@ let userInput,   // search term from user is stored here.
     // jambaseKey,
     // weatherKey,
     houseKey;
-let googleKey = "&key=AIzaSyAau6LZg7LxUiZ0KjzV_srJ3Ko37t7C1f4"
+let houseKey = 'api_key=xrc6s3i5hYNG-hwzWrtx';
+let googleKey = '&key=AIzaSyAau6LZg7LxUiZ0KjzV_srJ3Ko37t7C1f4';
 let weatherKey = "193249f07590eac5bc80e84e4709da36";
 let zipcodeKey = 'imEiYu7dtHr4ocGBcWp7P1nOUdfnt61MsF4q9cDDU5HjhnUujkB9lZYgddDGjFtL';
 let jambaseKey = 'qjxd658jgqut8g3vydvfqbj6';
