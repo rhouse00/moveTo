@@ -448,6 +448,7 @@ $('#registerButton').on('click', function(){
 // without logging in or registering.
 
 $('#guestButton').on('click', function(){
+	loadAppKeys();
 	logDisplay();
 	$('#nameDisplay').html('Past Searches');
 	$('#signOutButton').hide();
