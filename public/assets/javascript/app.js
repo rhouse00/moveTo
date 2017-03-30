@@ -205,7 +205,7 @@ function jambase(){
 	let jambaseZipcode = 'zipcode=' + zipcode;
 	let numberPages = 1;
 	let jambasePages = '&page=' + numberPages
-	let jambaseFullQueryUrl = jambaseQueryUrl + jambaseZipcode + jambasePages + '&api_key=' + jambaseKey;
+	let jambaseFullQueryUrl = jambaseQueryUrl + jambaseZipcode + jambasePages + jambaseKey;
 
 	$.ajax({
 		url: jambaseFullQueryUrl,
@@ -256,7 +256,7 @@ function addMusicEvents(results) {
 function weatherInfo () {
 	
 	let numResults = '&cnt=7';
-	let weatherQueryUrl = 'http://api.openweathermap.org/data/2.5/forecast/daily?q=' + city + numResults + '&APPID=' + weatherKey;
+	let weatherQueryUrl = 'http://api.openweathermap.org/data/2.5/forecast/daily?q=' + city + numResults + weatherKey;
 	$.ajax({
 		url: weatherQueryUrl,
 		method: 'GET'
