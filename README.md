@@ -70,3 +70,9 @@ The largest roadblock was getting 5 APIs to work togther, as some of the query i
 * When a user signs up for the service, they will preferences (types of music, things they like to do) that will help cater each search to the specific user
 * Grow the info that is displayed (schools, museums, etc.)
 * Update the UI/UX using React.js to help deal with the large amounts of changing data.
+
+
+## Snapshots
+
+![alt text](./public/assets/images/moveTo_login.png 'Website Landing Page')
+
